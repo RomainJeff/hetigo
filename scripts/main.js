@@ -88,48 +88,27 @@ function toggle(cellid)
 
 function suicide (x,y)
 {
-/*
-    var lib1 = game[x][y-1][0];
-    var lib2 = game[x+1][y][0];
-    var lib3 = game[x][y+1][0];
-    var lib4 = game[x-1][y][0];
-*/
-    var lib1;
-    var lib2;
-    var lib3;
-    var lib4;
+    var lib1 = 3;
+    var lib2 = 3;
+    var lib3 = 3;
+    var lib4 = 3;
     if (y-1>0)
     {
         lib1 = game[x][y-1][0];
-    }
-    else
-    {
-        lib1=3;
     }
     if (x+1>Rows)
     {
         lib1 = game[x+1][y][0];
     }
-    else
-    {
-        lib1=3;
-    }
     if (y+1>Rows)
     {
         lib1 = game[x][y+1][0];
-    }
-    else
-    {
-        lib1=3;
     }
     if (x-1>0)
     {
         lib1 = game[x-1][y][0];
     }
-    else
-    {
-        lib1=3;
-    }
+    
 
     
     // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
@@ -243,7 +222,7 @@ function actualisationGroups ()
                     }
                 }
             }
-            // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
+            // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)  
         }
     }
     
