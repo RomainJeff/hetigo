@@ -1,29 +1,27 @@
-
-/*
-
-var game[][][];
-
-// 1ere et 2 eme dimensions = plateau de jeu actuel (mis à jour à chaque tour)
-// 3 eme dimensio, enregistre les pions à chaque tour (1pion par case)
-// etatJeu[x][y][0] = actualisé à chaque fois, toutp plateau enregistré
-// etatJeu[x][y][1], etatJeu[x][y][2], etatJeu[x][y][tour] etc. = pion joué enregsitré à chaque fois
-
+var Columns = 9;
+var Rows = 9;
+var player; // 1 = black, 2 = white
 var tour = 1;
 
-var group[][]; // Group of each cell
+var group = new Array();
+for (var i=0; i<Rows; i++)
+{
+    group[i]=new Array ();
+}
 
-var prisonnier;
+var prisoner1 = 0; // Prisoners of player 1 (black)
+var prisoner2 = 0; // Prisoners of player 2 (white) 
 
-
-function 
-
-
-*/
-
-var Columns = 9;
-var Rows = 9; 
-var joueur = 0;
-
+var game = new Array(); 
+for (var i=0; i<Rows; i++)
+{
+    game[i]=new Array ();
+    for (var j=0; j<Columns; j++)
+    {
+        game[i][j]=new Array();
+    }
+}
+     
 
 displayCellState();
 
@@ -63,5 +61,52 @@ function toggle(cellid)
     
 
 }
-    
 
+
+
+function suicide (x,y)
+{
+    
+}
+
+
+
+function ko (x,y)
+{
+    
+}
+
+
+
+function capture (x,y)
+{
+    
+}
+
+
+
+function actualisationGroups ()
+{
+    
+}
+
+
+
+function libertiesGroup (x,y)
+{
+    
+}
+
+
+
+function playerTurn ()
+{
+    
+}
+
+
+
+function graphisme ()
+{
+    
+}
