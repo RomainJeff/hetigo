@@ -2,6 +2,7 @@ var Columns = 9;
 var Rows = 9;
 var player = 1; // 1 = black, 2 = white
 var tour = 1;
+var waitingPlayer = 2;
 
 var group = new Array();
 for (var i=0; i<Rows; i++)
@@ -87,7 +88,19 @@ function toggle(cellid)
 
 function suicide (x,y)
 {
-    return false;
+    var lib1 = game[x][y-1][0];
+    var lib2 = game[x+1][y][0];
+    var lib3 = game[x][y+1][0];
+    var lib4 = game[x-1][y][0];
+
+    if ((lib1 && lib2 && lib3 && lib4 == waitingPlayer) || (libertiesGroup(x,y)==true))
+ {
+ return true;
+ }
+ else
+ {
+ return false;
+ }
     
 }
 
@@ -125,10 +138,12 @@ function playerTurn ()
 {
     if (player == 1)
     {
+        waitingPlayer = 1;
         player = 2;
     }  
     else
     {
+        waitingPlayer = 2;
         player = 1;   
     }
 }
