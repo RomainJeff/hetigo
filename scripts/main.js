@@ -88,20 +88,60 @@ function toggle(cellid)
 
 function suicide (x,y)
 {
+/*
     var lib1 = game[x][y-1][0];
     var lib2 = game[x+1][y][0];
     var lib3 = game[x][y+1][0];
     var lib4 = game[x-1][y][0];
+*/
+    var lib1;
+    var lib2;
+    var lib3;
+    var lib4;
+    if (y-1>0)
+    {
+        lib1 = game[x][y-1][0];
+    }
+    else
+    {
+        lib1=3;
+    }
+    if (x+1>Rows)
+    {
+        lib1 = game[x+1][y][0];
+    }
+    else
+    {
+        lib1=3;
+    }
+    if (y+1>Rows)
+    {
+        lib1 = game[x][y+1][0];
+    }
+    else
+    {
+        lib1=3;
+    }
+    if (x-1>0)
+    {
+        lib1 = game[x-1][y][0];
+    }
+    else
+    {
+        lib1=3;
+    }
 
-    if ((lib1 && lib2 && lib3 && lib4 == waitingPlayer) || (libertiesGroup(x,y)==true))
- {
- return true;
- }
- else
- {
- return false;
- }
     
+    // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
+    
+    if ((lib1 && lib2 && lib3 && lib4 == waitingPlayer) || (libertiesGroup(x,y)==true))
+     {
+        return true;
+     }
+     else
+     {
+        return false;
+     }
 }
 
 
@@ -122,14 +162,9 @@ function capture (x,y)
 
 function actualisationGroups ()
 {
-    for (i=0; i<Rows; i++)
-    {
-        for (j=0; j<Columns; j++)
-        {
-            group[i][j]=0;
-        }}
     
     var Num_Groupe = 1;
+    
     for (i=0; i<Rows; i++)
     {
         for (j=0; j<Columns; j++)
@@ -138,10 +173,23 @@ function actualisationGroups ()
             {
                 group[i][j]=0;
             }
-            else if ( (j-1)>0 && game[i][j][0] == game[i][j-1][0])
+            else 
             {
-                var ancienG = group[i][j];
-                group[i][j] = group[i][j-1];
+                group[i][j] = Num_Groupe;
+                Num_Groupe++;
+            }
+        }
+    }
+    
+    
+     for (i=0; i<Rows; i++)
+    {
+        for (j=0; j<Columns; j++)
+        {
+    
+            if ( (j-1)>0 && game[i][j][0] == game[i][j-1][0])
+            {
+                var ancienG = group[i][j-1];
                 for (var k=0; k<Rows; k++)
                 {
                     for (var l=0; l<Columns; l++)
@@ -149,15 +197,13 @@ function actualisationGroups ()
                         if (group[k][l] == ancienG)
                         {
                             group[k][l] = group[i][j];
-                            console.log("yo");
                         }
                     }
                 }
             }
-            else if ( (i+1)>Rows && game[i][j][0] == game[i+1][j][0])
+            if ( (i+1)>Rows && game[i][j][0] == game[i+1][j][0])
             {
-                var ancienG = group[i][j];
-                group[i][j] = group[i+1][j];
+                var ancienG = group[i+1][j];
                 for (k=0; k<Rows; k++)
                 {
                     for (l=0; l<Columns; l++)
@@ -169,10 +215,9 @@ function actualisationGroups ()
                     }
                 }
             }
-            else if ( (j+1)<Rows && game[i][j][0] == game[i][j+1][0] )
+            if ( (j+1)<Rows && game[i][j][0] == game[i][j+1][0] )
             {
-                var ancienG = group[i][j];
-                group[i][j] = group[i][j+1];
+                var ancienG = group[i][j+1];
                 for (var k=0; k<Rows; k++)
                 {
                     for (var l=0; l<Columns; l++)
@@ -184,10 +229,9 @@ function actualisationGroups ()
                     }
                 }
             }
-            else if ( (i-1)>0 && game[i][j][0] == game[i-1][j][0])
+            if ( (i-1)>0 && game[i][j][0] == game[i-1][j][0])
             {
-                var ancienG = group[i][j];
-                group[i][j] = group[i-1][j];
+                var ancienG = group[i-1][j];
                 for (var k=0; k<Rows; k++)
                 {
                     for (var l=0; l<Columns; l++)
@@ -197,12 +241,117 @@ function actualisationGroups ()
                             group[k][l] = group[i][j];
                         }
                     }
-                }}
-            else
+                }
+            }
+            // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
+        }
+    }
+    
+    for (i=0; i<Rows; i++)
+    {
+        for (j=0; j<Columns; j++)
+        {
+            console.log("groupe" + group[i][j]);
+        }
+    }
+}
+
+
+
+/*
+
+for (i=0; i<Rows; i++)
+    {
+        for (j=0; j<Columns; j++)
+        {
+            var hello = true;
+            if ( game[i][j][0]==0)
+            {
+                hello = false;
+                group[i][j]=0;
+            }
+            
+            
+            if ( (j-1)>0 && game[i][j][0] == game[i][j-1][0])
+            {
+                hello = false;
+                var ancienG = group[i][j-1];
+                group[i][j] = Num_Groupe;
+                Num_Groupe++;
+                group[i][j-1] = group[i][j];
+                for (var k=0; k<Rows; k++)
+                {
+                    for (var l=0; l<Columns; l++)
+                    {
+                        if (group[k][l] == ancienG)
+                        {
+                            group[k][l] = group[i][j];
+                        }
+                    }
+                }
+            }
+            if ( (i+1)>Rows && game[i][j][0] == game[i+1][j][0])
+            {
+                hello = false;
+                var ancienG = group[i+1][j];
+                group[i][j] = Num_Groupe;
+                Num_Groupe++;
+                group[i+1][j] = group[i][j];
+                for (k=0; k<Rows; k++)
+                {
+                    for (l=0; l<Columns; l++)
+                    {
+                        if (group[k][l] == ancienG)
+                        {
+                            group[k][l] = group[i][j];
+                        }
+                    }
+                }
+            }
+            if ( (j+1)<Rows && game[i][j][0] == game[i][j+1][0] )
+            {
+                hello = false;
+                var ancienG = group[i][j+1];
+                group[i][j] = Num_Groupe;
+                Num_Groupe++;
+                group[i][j+1] = group[i][j];
+                for (var k=0; k<Rows; k++)
+                {
+                    for (var l=0; l<Columns; l++)
+                    {
+                        if (group[k][l] == ancienG)
+                        {
+                            group[k][l] = group[i][j];
+                        }
+                    }
+                }
+            }
+            if ( (i-1)>0 && game[i][j][0] == game[i-1][j][0])
+            {
+                hello = false;
+                var ancienG = group[i-1][j];
+                group[i][j] = Num_Groupe;
+                Num_Groupe++;
+                group[i-1][j] = group[i][j];
+                for (var k=0; k<Rows; k++)
+                {
+                    for (var l=0; l<Columns; l++)
+                    {
+                        if (group[k][l] == ancienG)
+                        {
+                            group[k][l] = group[i][j];
+                        }
+                    }
+                }
+            }
+            
+            if (hello == true)
             {
                 group[i][j] = Num_Groupe;
                 Num_Groupe++;
             }
+            
+            
         }
     }
     
@@ -215,6 +364,7 @@ function actualisationGroups ()
         }}
 }
 
+*/
 
 
 function libertiesGroup (x,y)
