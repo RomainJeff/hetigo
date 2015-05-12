@@ -70,10 +70,8 @@ function toggle(cellid)
     }
     else
     {
-        console.log(game[x][y][0]);
         game[x][y][0]=player;
         game[x][y][tour]=player;
-        console.log(game[x][y][0]);
         
         actualisationGroups();
         capture(x,y);
@@ -96,19 +94,18 @@ function suicide (x,y)
     {
         lib1 = game[x][y-1][0];
     }
-    if (x+1>Rows)
+    if (x+1<Rows)
     {
-        lib1 = game[x+1][y][0];
+        lib2 = game[x+1][y][0];
     }
-    if (y+1>Rows)
+    if (y+1<Rows)
     {
-        lib1 = game[x][y+1][0];
+        lib3 = game[x][y+1][0];
     }
     if (x-1>0)
     {
-        lib1 = game[x-1][y][0];
+        lib4 = game[x-1][y][0];
     }
-    
 
     
     // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
@@ -225,125 +222,9 @@ function actualisationGroups ()
             // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)  
         }
     }
-    
-    for (i=0; i<Rows; i++)
-    {
-        for (j=0; j<Columns; j++)
-        {
-            console.log("groupe" + group[i][j]);
-        }
-    }
+
 }
 
-
-
-/*
-
-for (i=0; i<Rows; i++)
-    {
-        for (j=0; j<Columns; j++)
-        {
-            var hello = true;
-            if ( game[i][j][0]==0)
-            {
-                hello = false;
-                group[i][j]=0;
-            }
-            
-            
-            if ( (j-1)>0 && game[i][j][0] == game[i][j-1][0])
-            {
-                hello = false;
-                var ancienG = group[i][j-1];
-                group[i][j] = Num_Groupe;
-                Num_Groupe++;
-                group[i][j-1] = group[i][j];
-                for (var k=0; k<Rows; k++)
-                {
-                    for (var l=0; l<Columns; l++)
-                    {
-                        if (group[k][l] == ancienG)
-                        {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            if ( (i+1)>Rows && game[i][j][0] == game[i+1][j][0])
-            {
-                hello = false;
-                var ancienG = group[i+1][j];
-                group[i][j] = Num_Groupe;
-                Num_Groupe++;
-                group[i+1][j] = group[i][j];
-                for (k=0; k<Rows; k++)
-                {
-                    for (l=0; l<Columns; l++)
-                    {
-                        if (group[k][l] == ancienG)
-                        {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            if ( (j+1)<Rows && game[i][j][0] == game[i][j+1][0] )
-            {
-                hello = false;
-                var ancienG = group[i][j+1];
-                group[i][j] = Num_Groupe;
-                Num_Groupe++;
-                group[i][j+1] = group[i][j];
-                for (var k=0; k<Rows; k++)
-                {
-                    for (var l=0; l<Columns; l++)
-                    {
-                        if (group[k][l] == ancienG)
-                        {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            if ( (i-1)>0 && game[i][j][0] == game[i-1][j][0])
-            {
-                hello = false;
-                var ancienG = group[i-1][j];
-                group[i][j] = Num_Groupe;
-                Num_Groupe++;
-                group[i-1][j] = group[i][j];
-                for (var k=0; k<Rows; k++)
-                {
-                    for (var l=0; l<Columns; l++)
-                    {
-                        if (group[k][l] == ancienG)
-                        {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            
-            if (hello == true)
-            {
-                group[i][j] = Num_Groupe;
-                Num_Groupe++;
-            }
-            
-            
-        }
-    }
-    
-    for (i=0; i<Rows; i++)
-    {
-        for (j=0; j<Columns; j++)
-        {
-    
-    console.log("groupe" + group[i][j]);
-        }}
-}
-
-*/
 
 
 function libertiesGroup (x,y)
