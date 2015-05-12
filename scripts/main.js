@@ -1,6 +1,6 @@
 var Columns = 9;
 var Rows = 9;
-var player; // 1 = black, 2 = white
+var player = 1; // 1 = black, 2 = white
 var tour = 1;
 
 var group = new Array();
@@ -19,6 +19,8 @@ for (var i=0; i<Rows; i++)
     for (var j=0; j<Columns; j++)
     {
         game[i][j]=new Array();
+        game[i][j][0]=2;
+        game[i][j][0]=0;
     }
 }
      
@@ -55,10 +57,29 @@ function displayCellState()
 
 function toggle(cellid)
 {
-
-    var element = document.getElementById(cellid);
-    element.setAttribute("class", "black");
+    console.log(cellid);
+    var indexTiret = cellid.indexOf("_");
+    var x = parseInt(cellid.substring(0, indexTiret));
+    var y = parseInt(cellid.substring(indexTiret+1));
     
+    if (game[x][y][0]!=0 || suicide(x,y)==true || ko(x,y)==true)
+    {
+        console.log("Impossible de jouer ici");
+        return;
+    }
+    else
+    {
+        console.log(game[x][y][0]);
+        game[x][y][0]=player;
+        game[x][y][tour]=player;
+        console.log(game[x][y][0]);
+        
+        actualisationGroups();
+        capture(x,y);
+        graphisme();
+        tour++;
+        playerTurn();
+    }
 
 }
 
@@ -66,6 +87,7 @@ function toggle(cellid)
 
 function suicide (x,y)
 {
+    return false;
     
 }
 
@@ -73,7 +95,7 @@ function suicide (x,y)
 
 function ko (x,y)
 {
-    
+    return false;
 }
 
 
@@ -101,12 +123,34 @@ function libertiesGroup (x,y)
 
 function playerTurn ()
 {
-    
+    if (player == 1)
+    {
+        player = 2;
+    }  
+    else
+    {
+        player = 1;   
+    }
 }
 
 
 
 function graphisme ()
 {
-    
+    for (var i=0; i<Rows; i++)
+    {
+        for (var j=0; j<Columns; j++)
+        {
+            if (game[i][j][0]==1)
+            {
+                var element = document.getElementById(i+"_"+j);
+                element.setAttribute("class", "black");
+            }
+            else if (game[i][j][0]==2)
+            {
+                var element = document.getElementById(i+"_"+j);
+                element.setAttribute("class", "white");
+            }   
+        }
+    }
 }
