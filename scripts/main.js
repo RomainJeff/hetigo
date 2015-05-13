@@ -63,6 +63,7 @@ function toggle(cellid)
     var x = parseInt(cellid.substring(0, indexTiret));
     var y = parseInt(cellid.substring(indexTiret+1));
     
+    
     if (game[x][y][0]!=0 || suicide(x,y)==true || ko(x,y)==true)
     {
         console.log("Impossible de jouer ici");
@@ -86,6 +87,7 @@ function toggle(cellid)
 
 function suicide (x,y)
 {
+    game[x][y][0]=player;
     var lib1 = 3;
     var lib2 = 3;
     var lib3 = 3;
@@ -109,15 +111,30 @@ function suicide (x,y)
 
     
     // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
+    var suicide = true;
+    actualisationGroups();
+    var groupeNum = group[x][y];
+    for (var i=0; i<Rows; i++)
+    {
+        for (var j=0; j<Rows; j++)
+        {
+            if (group[i][j]==groupeNum && groupeNum!=0)
+            {
+                if ( game[i][j-1][0]==0 || game[i+1][j][0]==0 || game[i][j+1][0]==0 || game[i-1][j][0]==0 )
+                {
+                    suicide = false;
+                }
+            }
+        }
+    }
     
-    if ((lib1 && lib2 && lib3 && lib4 == waitingPlayer) || (libertiesGroup(x,y)==true))
-     {
+    if (suicide==true)
+    {
+        game[x][y][0]=0;
+        console.log("suicide");
         return true;
-     }
-     else
-     {
-        return false;
-     }
+    }
+    return false;
 }
 
 
@@ -131,9 +148,28 @@ function ko (x,y)
 
 function capture (x,y)
 {
-    
+    console.log("x+1"+(x+1));
+    if ( (y-1)>0 && game[x][y-1][0] == waitingPlayer)
+    {
+        console.log("yol1");
+        libertiesGroup(x, y-1);
+    }
+    if ((x+1)<Rows && game[x+1][y][0] == waitingPlayer)
+    {
+        console.log("yol1");
+        libertiesGroup(x+1, y);
+    }
+    if ((y+1)<Rows && game[x][y+1][0] == waitingPlayer)
+    {
+        console.log("yol1");
+        libertiesGroup(x, y+1);
+    }
+    if ((x-1)>0 && game[x-1][y][0]== waitingPlayer)
+    {
+        console.log("yol1");
+        libertiesGroup(x-1, y);
+    }
 }
-
 
 
 function actualisationGroups ()
@@ -229,7 +265,39 @@ function actualisationGroups ()
 
 function libertiesGroup (x,y)
 {
+    actualisationGroups();
+    var groupeNum = group[x][y];
+    for (var i=0; i<Rows; i++)
+    {
+        for (var j=0; j<Rows; j++)
+        {
+            if (group[i][j]==groupeNum && groupeNum!=0)
+            {
+                if ( game[i][j-1][0]==0 || game[i+1][j][0]==0 || game[i][j+1][0]==0 || game[i-1][j][0] == 0 )
+                {
+                    console.log("tttt"+game[i][j][0]);
+                    return;
+                    // Si un pion du groupe à une libertés, il n'y a pas capture
+                }
+            }
+        }
+    }
     
+    
+    // Si on arrive la, c'est que le groupe n'avait aucune libertés
+    for (var i=0; i<Rows; i++)
+    {
+        for (var j=0; j<Rows; j++)
+        {
+            if (group[i][j]==groupeNum)
+            {
+                game[i][j][0] = 0;
+                //prisonniersJoueur ++;
+                // Donc on remet à 0 les pions capturés du groupe et on increment la variable de
+            }
+        }
+    }
+    actualisationGroups() ;
 }
 
 
@@ -256,6 +324,11 @@ function graphisme ()
     {
         for (var j=0; j<Columns; j++)
         {
+            if (game[i][j][0]==0)
+            {
+                var element = document.getElementById(i+"_"+j);
+                element.setAttribute("class", "empty");
+            }
             if (game[i][j][0]==1)
             {
                 var element = document.getElementById(i+"_"+j);
