@@ -81,7 +81,7 @@ function backgroundBoard(){
 
 function toggle(cellid)
 {
-    console.log(cellid);
+    console.log("case: " + cellid);
     var indexTiret = cellid.indexOf("_");
     var x = parseInt(cellid.substring(0, indexTiret));
     var y = parseInt(cellid.substring(indexTiret+1));
@@ -111,27 +111,6 @@ function toggle(cellid)
 function suicide (x,y)
 {
     game[x][y][0]=player;
-    var lib1 = 3;
-    var lib2 = 3;
-    var lib3 = 3;
-    var lib4 = 3;
-    if (y-1>0)
-    {
-        lib1 = game[x][y-1][0];
-    }
-    if (x+1<Rows)
-    {
-        lib2 = game[x+1][y][0];
-    }
-    if (y+1<Rows)
-    {
-        lib3 = game[x][y+1][0];
-    }
-    if (x-1>0)
-    {
-        lib4 = game[x-1][y][0];
-    }
-
     
     // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
     var suicide = true;
@@ -143,7 +122,7 @@ function suicide (x,y)
         {
             if (group[i][j]==groupeNum && groupeNum!=0)
             {
-                if ( game[i][j-1][0]==0 || game[i+1][j][0]==0 || game[i][j+1][0]==0 || game[i-1][j][0]==0 )
+                if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<Rows && game[i+1][j][0]==0) || ((j+1)<Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) )
                 {
                     suicide = false;
                 }
@@ -171,25 +150,20 @@ function ko (x,y)
 
 function capture (x,y)
 {
-    console.log("x+1"+(x+1));
     if ( (y-1)>0 && game[x][y-1][0] == waitingPlayer)
     {
-        console.log("yol1");
         libertiesGroup(x, y-1);
     }
     if ((x+1)<Rows && game[x+1][y][0] == waitingPlayer)
     {
-        console.log("yol1");
         libertiesGroup(x+1, y);
     }
     if ((y+1)<Rows && game[x][y+1][0] == waitingPlayer)
     {
-        console.log("yol1");
         libertiesGroup(x, y+1);
     }
     if ((x-1)>0 && game[x-1][y][0]== waitingPlayer)
     {
-        console.log("yol1");
         libertiesGroup(x-1, y);
     }
 }
@@ -222,12 +196,12 @@ function actualisationGroups ()
         for (j=0; j<Columns; j++)
         {
     
-            if ( (j-1)>0 && game[i][j][0] == game[i][j-1][0])
+            if ( (j-1)>=0 && game[i][j][0] == game[i][j-1][0])
             {
                 var ancienG = group[i][j-1];
                 for (var k=0; k<Rows; k++)
                 {
-                    for (var l=0; l<Columns; l++)
+                    for (var l=0; l<Rows; l++)
                     {
                         if (group[k][l] == ancienG)
                         {
@@ -241,7 +215,7 @@ function actualisationGroups ()
                 var ancienG = group[i+1][j];
                 for (k=0; k<Rows; k++)
                 {
-                    for (l=0; l<Columns; l++)
+                    for (l=0; l<Rows; l++)
                     {
                         if (group[k][l] == ancienG)
                         {
@@ -255,7 +229,7 @@ function actualisationGroups ()
                 var ancienG = group[i][j+1];
                 for (var k=0; k<Rows; k++)
                 {
-                    for (var l=0; l<Columns; l++)
+                    for (var l=0; l<Rows; l++)
                     {
                         if (group[k][l] == ancienG)
                         {
@@ -264,12 +238,12 @@ function actualisationGroups ()
                     }
                 }
             }
-            if ( (i-1)>0 && game[i][j][0] == game[i-1][j][0])
+            if ( (i-1)>=0 && game[i][j][0] == game[i-1][j][0])
             {
                 var ancienG = group[i-1][j];
                 for (var k=0; k<Rows; k++)
                 {
-                    for (var l=0; l<Columns; l++)
+                    for (var l=0; l<Rows; l++)
                     {
                         if (group[k][l] == ancienG)
                         {
@@ -296,9 +270,8 @@ function libertiesGroup (x,y)
         {
             if (group[i][j]==groupeNum && groupeNum!=0)
             {
-                if ( game[i][j-1][0]==0 || game[i+1][j][0]==0 || game[i][j+1][0]==0 || game[i-1][j][0] == 0 )
+                if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<=Rows && game[i+1][j][0]==0) || ((j+1)<=Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) )
                 {
-                    console.log("tttt"+game[i][j][0]);
                     return;
                     // Si un pion du groupe à une libertés, il n'y a pas capture
                 }
