@@ -1,3 +1,4 @@
+
 var Columns = 9;
 var Rows = 9;
 var player = 1; // 1 = black, 2 = white
@@ -27,7 +28,7 @@ for (var i=0; i<Rows; i++)
      
 
 displayCellState();
-
+backgroundBoard();
 
 
 function displayCellState()
@@ -54,6 +55,28 @@ function displayCellState()
 
 }
 
+function backgroundBoard(){
+    var bg='';
+    document.getElementById("background").innerHTML = "";
+    
+    for (var i=0;i<(Rows-1); i++)
+    {
+        bg+="<div class='bgLines'>";	
+        
+        for (var j=0;j<(Columns-1); j++){
+            
+            bg+= '<div class="intersection"></div>';
+
+        }	
+        
+        bg=bg+'</div>';
+        
+    }
+
+    document.getElementById("background").innerHTML = bg;
+    
+    
+}
 
 
 function toggle(cellid)
