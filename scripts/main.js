@@ -1,5 +1,4 @@
 
-var Columns = 9;
 var Rows = 9;
 var player = 1; // 1 = black, 2 = white
 var tour = 1;
@@ -18,7 +17,7 @@ var game = new Array();
 for (var i=0; i<Rows; i++)
 {
     game[i]=new Array ();
-    for (var j=0; j<Columns; j++)
+    for (var j=0; j<Rows; j++)
     {
         game[i][j]=new Array();
         game[i][j][0]=2;
@@ -41,7 +40,7 @@ function displayCellState()
     {
         grid+="<div class='lines'>";	
         
-        for (var j=0;j<Columns; j++){
+        for (var j=0;j<Rows; j++){
             
             grid+= '<div id="' + (i+"_"+j) +'" class="empty" onclick="toggle(id);"></div>';
 
@@ -63,7 +62,7 @@ function backgroundBoard(){
     {
         bg+="<div class='bgLines'>";	
         
-        for (var j=0;j<(Columns-1); j++){
+        for (var j=0;j<(Rows-1); j++){
             
             bg+= '<div class="bgIntersection"></div>';
 
@@ -176,7 +175,7 @@ function actualisationGroups ()
     
     for (i=0; i<Rows; i++)
     {
-        for (j=0; j<Columns; j++)
+        for (j=0; j<Rows; j++)
         {
             if ( game[i][j][0]==0)
             {
@@ -193,7 +192,7 @@ function actualisationGroups ()
     
      for (i=0; i<Rows; i++)
     {
-        for (j=0; j<Columns; j++)
+        for (j=0; j<Rows; j++)
         {
     
             if ( (j-1)>=0 && game[i][j][0] == game[i][j-1][0])
@@ -317,7 +316,7 @@ function graphisme ()
 {
     for (var i=0; i<Rows; i++)
     {
-        for (var j=0; j<Columns; j++)
+        for (var j=0; j<Rows; j++)
         {
             if (game[i][j][0]==0)
             {
