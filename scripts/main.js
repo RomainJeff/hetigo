@@ -150,19 +150,19 @@ function ko (x,y)
 
 function capture (x,y)
 {
-    if ( (y-1)>0 && game[x][y-1][0] == waitingPlayer)
+    if ( (y-1)>=0 && game[x][y-1][0]==waitingPlayer)
     {
         libertiesGroup(x, y-1);
     }
-    if ((x+1)<Rows && game[x+1][y][0] == waitingPlayer)
+    if ((x+1)<Rows && game[x+1][y][0]==waitingPlayer)
     {
         libertiesGroup(x+1, y);
     }
-    if ((y+1)<Rows && game[x][y+1][0] == waitingPlayer)
+    if ((y+1)<Rows && game[x][y+1][0]==waitingPlayer)
     {
         libertiesGroup(x, y+1);
     }
-    if ((x-1)>0 && game[x-1][y][0]== waitingPlayer)
+    if ((x-1)>=0 && game[x-1][y][0]==waitingPlayer)
     {
         libertiesGroup(x-1, y);
     }
@@ -270,7 +270,7 @@ function libertiesGroup (x,y)
         {
             if (group[i][j]==groupeNum && groupeNum!=0)
             {
-                if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<=Rows && game[i+1][j][0]==0) || ((j+1)<=Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) )
+                if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<Rows && game[i+1][j][0]==0) || ((j+1)<Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) )
                 {
                     return;
                     // Si un pion du groupe à une libertés, il n'y a pas capture
@@ -293,7 +293,6 @@ function libertiesGroup (x,y)
             }
         }
     }
-    actualisationGroups() ;
 }
 
 
