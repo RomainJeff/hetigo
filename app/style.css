@@ -1,4 +1,5 @@
 #goban {
+    position: relative;
     z-index:100;
     display: inline-block;
     width:468px;
@@ -9,6 +10,12 @@
 .lines {
     
 }
+
+.lines div {
+    border-radius: 100px;
+}
+
+/* -------------- PIONS ---------------- */
 
 .empty {
     display:inline-block;
@@ -42,14 +49,16 @@
     
 }
 
-#background {
-    z-index: 1;
+
+
+/* ----------------- BACKGROUND ---------------- */
+
+#background{
     margin-left:225px;
     margin-top:-493px;
-    border:2px solid yellow;
+    /*border:2px solid yellow;*/
     width:418px;
     height:418px;
-
 }
 
 .bgLines {
@@ -59,7 +68,7 @@
     
 }
 
-.intersection {
+.bgIntersection {
     display:inline-block;
     height:50px;
     width:50px;

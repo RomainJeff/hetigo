@@ -26,9 +26,9 @@ for (var i=0; i<Rows; i++)
     }
 }
      
-
-displayCellState();
 backgroundBoard();
+displayCellState();
+
 
 
 function displayCellState()
@@ -65,7 +65,7 @@ function backgroundBoard(){
         
         for (var j=0;j<(Columns-1); j++){
             
-            bg+= '<div class="intersection"></div>';
+            bg+= '<div class="bgIntersection"></div>';
 
         }	
         
