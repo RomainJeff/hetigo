@@ -2,41 +2,31 @@
     position: relative;
     z-index:100;
     display: inline-block;
-    width:468px;
+    width:480px;
     height:468px;
     margin-left:200px;
 }
 
-.lines {
-    
-}
 
-.lines div {
+#goban div {
+    display:inline-block;
+    width:25px;
+    height:25px;
     border-radius: 100px;
+    float: left;
 }
 
 /* -------------- PIONS ---------------- */
 
 .empty {
-    display:inline-block;
-    width:50px;
-    height:50px;
-    
+    background-color: transparent;
 }
 
 .black {
-    display:inline-block;
-    width:50px;
-    height:50px;
-    
     background-color:black;
 }
 
 .white {
-    display:inline-block;
-    width:50px;
-    height:50px;
-    
     background-color:#716666;
 }
 
@@ -64,23 +54,17 @@
 /* ----------------- BACKGROUND ---------------- */
 
 #background{
-    margin-left:225px;
-    margin-top:-493px;
-    /*border:2px solid yellow;*/
-    width:418px;
-    height:418px;
+    margin-left:211px;
+    margin-top:-460px;
+    border:2px solid yellow;
+    width: 480px;
+    height:480px;
 }
 
-.bgLines {
-    width:468px;
-    height:50px;
-    margin-left:auto;
-    
-}
 
 .bgIntersection {
     display:inline-block;
-    height:50px;
-    width:50px;
+    height:24px;
+    width:24px;
     border:1px solid green;
 }
