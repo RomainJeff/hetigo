@@ -1,8 +1,13 @@
 
 var Rows = 9;
-var player = 1; // 1 = black, 2 = white
 var tour = 1;
-var waitingPlayer = 2;
+
+var prisoner1 = 0; // Prisoners of player 1 (black)
+var prisoner2 = 0; // Prisoners of player 2 (white) 
+
+var player = 2; // 1 = black, 2 = white
+var waitingPlayer = 1;
+playerTurn();
 
 var group = new Array();
 for (var i=0; i<Rows; i++)
@@ -10,8 +15,7 @@ for (var i=0; i<Rows; i++)
     group[i]=new Array ();
 }
 
-var prisoner1 = 0; // Prisoners of player 1 (black)
-var prisoner2 = 0; // Prisoners of player 2 (white) 
+
 
 var game = new Array(); 
 for (var i=0; i<Rows; i++)
@@ -22,6 +26,10 @@ for (var i=0; i<Rows; i++)
         game[i][j]=new Array();
         game[i][j][0]=2;
         game[i][j][0]=0;
+        for (var k=0; k<1000; k++)
+        {
+             game[i][j][k]=0;
+        }
     }
 }
      
@@ -131,18 +139,51 @@ function suicide (x,y)
     
     if (suicide==true)
     {
-        game[x][y][0]=0;
-        console.log("suicide");
-        return true;
+        if ( (y-1)>=0 && game[x][y-1][0]==waitingPlayer && libertiesGroup(x, y-1)==false)
+        {
+            game[x][y][0]=0;
+           return false;
+        }
+        else if ((x+1)<Rows && game[x+1][y][0]==waitingPlayer && libertiesGroup(x+1, y)==false)
+        {
+            game[x][y][0]=0;
+            return false;
+        }
+        else if ((y+1)<Rows && game[x][y+1][0]==waitingPlayer && libertiesGroup(x, y+1)==false)
+        {
+            game[x][y][0]=0;
+            return false;
+        }
+        else if ((x-1)>=0 && game[x-1][y][0]==waitingPlayer && libertiesGroup(x-1, y)==false)
+        {
+            game[x][y][0]=0;
+            return false;
+        }
+        else 
+        {
+            game[x][y][0]=0;
+            console.log("suicide");
+            return true;
+        }
     }
-    return false;
 }
 
 
 
 function ko (x,y)
 {
-    return false;
+    game[x][y][tour]=player;
+    if (tour>2 && game[x][y][tour-2]!=0 && game[x][y][tour-2]==game[x][y][tour])
+    {
+        game[x][y][tour]=0;
+        console.log("ko");
+        return true;
+    }
+    else
+    {
+        game[x][y][tour]=0;
+        return false;
+    }
 }
 
 
@@ -151,21 +192,35 @@ function capture (x,y)
 {
     if ( (y-1)>=0 && game[x][y-1][0]==waitingPlayer)
     {
-        libertiesGroup(x, y-1);
+       if (libertiesGroup(x, y-1)==false)
+       {
+           supGroup(x, y-1);
+       }
     }
     if ((x+1)<Rows && game[x+1][y][0]==waitingPlayer)
     {
-        libertiesGroup(x+1, y);
+        if (libertiesGroup(x+1, y)==false)
+       {
+           supGroup(x+1, y);
+       }
     }
     if ((y+1)<Rows && game[x][y+1][0]==waitingPlayer)
     {
-        libertiesGroup(x, y+1);
+        if (libertiesGroup(x, y+1)==false)
+       {
+           supGroup(x, y+1);
+       }
     }
     if ((x-1)>=0 && game[x-1][y][0]==waitingPlayer)
     {
-        libertiesGroup(x-1, y);
+        if (libertiesGroup(x-1, y)==false)
+       {
+           supGroup(x-1, y);
+       }
     }
 }
+
+
 
 
 function actualisationGroups ()
@@ -259,36 +314,49 @@ function actualisationGroups ()
 
 
 
-function libertiesGroup (x,y)
+
+function libertiesGroup (x,y) // Seeking the liberties of a group
 {
     actualisationGroups();
-    var groupeNum = group[x][y];
+    var groupNum = group[x][y];
     for (var i=0; i<Rows; i++)
     {
         for (var j=0; j<Rows; j++)
         {
-            if (group[i][j]==groupeNum && groupeNum!=0)
+            if (group[i][j]==groupNum && groupNum!=0)
             {
                 if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<Rows && game[i+1][j][0]==0) || ((j+1)<Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) )
                 {
-                    return;
-                    // Si un pion du groupe à une libertés, il n'y a pas capture
+                    return true; // This group has at least one liberty
                 }
             }
         }
     }
-    
-    
-    // Si on arrive la, c'est que le groupe n'avait aucune libertés
+    return false; // The group has not liberties left
+}
+
+
+
+
+function supGroup (x,y) // Deleting the groups
+{
+    var groupNum = group[x][y]; // The group of this cell has no liberties left, it has to be deleted
     for (var i=0; i<Rows; i++)
     {
         for (var j=0; j<Rows; j++)
         {
-            if (group[i][j]==groupeNum)
+            if (group[i][j]==groupNum)
             {
-                game[i][j][0] = 0;
+                game[i][j][0] = 0; // Every cell of this group is now empty
                 //prisonniersJoueur ++;
-                // Donc on remet à 0 les pions capturés du groupe et on increment la variable de
+                if (player==1)
+                {
+                    prisoner1++;
+                }
+                else
+                {
+                    prisoner2++;
+                }
             }
         }
     }
@@ -308,6 +376,9 @@ function playerTurn ()
         waitingPlayer = 2;
         player = 1;   
     }
+    document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
+    document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner2;
+    document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner1;
 }
 
 

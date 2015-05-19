@@ -40,15 +40,25 @@
     background-color:#716666;
 }
 
+
+/* ----------------- INFOS PLAYERS ---------------- */
+
+
 #joueurInfo {
     position:absolute;
     display:inline-block;
     margin-top:130px;
     font-family:serif;
     font-size:27px;
-    
 }
 
+#blackPlayer{
+    border: 1px solid black;
+}
+
+#whitePlayer{
+    border: 1px solid black;
+}
 
 
 /* ----------------- BACKGROUND ---------------- */
