@@ -42,11 +42,9 @@ function displayCellState()
 {
     var grid='';
 
-    document.getElementById("goban").innerHTML = "";	
-
     for (var i=0;i<Rows; i++)
     {
-        grid+="<div class='lines'>";	
+         grid+="<div class='lines'>";	
         
         for (var j=0;j<Rows; j++){
             
@@ -54,7 +52,7 @@ function displayCellState()
 
         }	
         
-        grid=grid+'</div>';
+         grid=grid+'</div>';
         
     }
 
@@ -64,11 +62,10 @@ function displayCellState()
 
 function backgroundBoard(){
     var bg='';
-    document.getElementById("background").innerHTML = "";
     
     for (var i=0;i<(Rows-1); i++)
     {
-        bg+="<div class='bgLines'>";	
+         bg+="<div class='bgLines'>";	
         
         for (var j=0;j<(Rows-1); j++){
             
@@ -76,7 +73,7 @@ function backgroundBoard(){
 
         }	
         
-        bg=bg+'</div>';
+         bg=bg+'</div>';
         
     }
 
@@ -97,7 +94,7 @@ function toggle(cellid)
     if (game[x][y][0]!=0 || suicide(x,y)==true || ko(x,y)==true)
     {
         console.log("Impossible de jouer ici");
-        return;
+        // return;
     }
     else
     {
