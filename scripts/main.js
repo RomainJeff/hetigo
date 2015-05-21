@@ -141,69 +141,41 @@ function capture (x,y) {
 
 function actualisationGroups () {
     
-    var Num_Groupe = 1;
+    var num_Group = 1;
+    
+    for (i=0; i<Rows; i++) {
+        for (j=0; j<Rows; j++) {
+            group[i][j]=undefined;
+        }
+    }
     
     for (i=0; i<Rows; i++) {
         for (j=0; j<Rows; j++) {
             if ( game[i][j][0]==0) {
                 group[i][j]=0;
-            } else {
-                group[i][j] = Num_Groupe;
-                Num_Groupe++;
+            } else if (group[i][j]===undefined) {
+                groupRecursive(i,j);
+                num_Group++;
             }
         }
     }
     
-    for (i=0; i<Rows; i++) {
-        for (j=0; j<Rows; j++) {
-            if ( (j-1)>=0 && game[i][j][0] == game[i][j-1][0]) {
-                var ancienG = group[i][j-1];
-                
-                for (var k=0; k<Rows; k++) {
-                    for (var l=0; l<Rows; l++) {
-                        if (group[k][l] == ancienG) {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            if ( (i+1)>Rows && game[i][j][0] == game[i+1][j][0]) {
-                var ancienG = group[i+1][j];
-                
-                for (k=0; k<Rows; k++) {
-                    for (l=0; l<Rows; l++) {
-                        if (group[k][l] == ancienG) {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            if ( (j+1)<Rows && game[i][j][0] == game[i][j+1][0]) {
-                var ancienG = group[i][j+1];
-                
-                for (var k=0; k<Rows; k++) {
-                    for (var l=0; l<Rows; l++) {
-                        if (group[k][l] == ancienG) {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            if ( (i-1)>=0 && game[i][j][0] == game[i-1][j][0]) {
-                var ancienG = group[i-1][j];
-                
-                for (var k=0; k<Rows; k++) {
-                    for (var l=0; l<Rows; l++) {
-                        if (group[k][l] == ancienG) {
-                            group[k][l] = group[i][j];
-                        }
-                    }
-                }
-            }
-            // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)  
+    function groupRecursive (x,y) {
+        group[x][y]=num_Group;
+        if ( (y-1)>=0 && game[x][y][0] == game[x][y-1][0] && group[x][y-1]===undefined) {
+            groupRecursive(x, (y-1));
         }
+        if ( (x+1)<Rows && game[x][y][0] == game[x+1][y][0] && group[x+1][y]===undefined) {
+            groupRecursive((x+1), y);
+        }
+        if ( (y+1)<Rows && game[x][y][0] == game[x][y+1][0] && group[x][y+1]===undefined) {
+            groupRecursive(x, (y+1));
+        }
+        if ( (x-1)>=0 && game[x][y][0] == game[x-1][y][0] && group[x-1][y]===undefined) {
+            groupRecursive((x-1), y);
+        }
+        return;
     }
-
 }
 
 
