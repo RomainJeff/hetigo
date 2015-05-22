@@ -1,19 +1,45 @@
 #goban {
-    position: relative;
+    position:relative;
     z-index:100;
     display: inline-block;
-    width:480px;
-    height:468px;
-    margin-left:200px;
+    width:950px;
+    height:950px;
+    margin-left:185px;
+    margin-top:0px;
 }
 
 
 #goban div {
     display:inline-block;
-    width:25px;
-    height:25px;
-    border-radius: 100px;
     float: left;
+    width:38px;
+    height:38px;
+    margin-top:6px;
+    margin-bottom:6px;
+    margin-right:6px;
+    margin-left:6px;
+    border-radius: 100px;
+    
+}
+
+/* ----------------- BACKGROUND ---------------- */
+
+#background{
+    position:absolute;
+    margin-left:210px;
+    margin-top:-930px;
+    border:1px solid yellow;
+    width: 900px;
+    
+}
+
+#background .bgIntersection {
+    display:inline-block;
+    margin:0, auto;
+    height:48px;
+    width:48px;
+    border:1px solid green;
+    float:left;
 }
 
 /* -------------- PIONS ---------------- */
@@ -35,7 +61,7 @@
 
 
 #joueurInfo {
-    position:absolute;
+    float:left;
     display:inline-block;
     margin-top:130px;
     font-family:serif;
@@ -51,20 +77,3 @@
 }
 
 
-/* ----------------- BACKGROUND ---------------- */
-
-#background{
-    margin-left:211px;
-    margin-top:-460px;
-    border:2px solid yellow;
-    width: 480px;
-    height:480px;
-}
-
-
-.bgIntersection {
-    display:inline-block;
-    height:24px;
-    width:24px;
-    border:1px solid green;
-}
