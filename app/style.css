@@ -1,11 +1,11 @@
 #goban {
-    position:relative;
+    position:absolute;
     z-index:100;
     display: inline-block;
     width:950px;
     height:950px;
-    margin-left:185px;
-    margin-top:0px;
+    margin-left: 193px;
+    left: 0;
 }
 
 
@@ -27,9 +27,9 @@
 #background{
     position:absolute;
     margin-left:210px;
-    margin-top:-930px;
     border:1px solid yellow;
     width: 900px;
+    margin-top: 25px;
     
 }
 
