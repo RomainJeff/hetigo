@@ -76,23 +76,3 @@
     border: 1px solid black;
 }
 
-
-/* ----------------- BACKGROUND ---------------- */
-
-#background{
-    margin-left:211px;
-    margin-top:-460px;
-    border:2px solid yellow;
-    width: 480px;
-    height:480px;
-}
-
-
-.bgIntersection {
-    display:inline-block;
-    height:24px;
-    width:24px;
-    border:1px solid green;
-    float:left;
-}
-
