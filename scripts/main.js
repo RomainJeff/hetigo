@@ -4,6 +4,8 @@ var tour = 1;
 var prisoner1 = 0; // Prisoners of player 1 (black)
 var prisoner2 = 0; // Prisoners of player 2 (white) 
 
+var skippedTurn = 0;
+
 var player = 2; // 1 = black, 2 = white
 var waitingPlayer = 1;
 playerTurn();
@@ -217,21 +219,33 @@ function supGroup (x,y) // Deleting the groups
     }
 }
 
-
-
 function playerTurn () {
     if (player == 1) {
         waitingPlayer = 1;
         player = 2;
+        
     } else {
         waitingPlayer = 2;
         player = 1;   
+        
     }
+    
+    skippedTurn=0;
+    console.log(skippedTurn);
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
     document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner2;
     document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner1;
 }
 
+function skipTurn (){
+    skippedTurn++;
+    player=waitingPlayer;
+    console.log(skippedTurn);
+    
+    if (skippedTurn==2){
+        console.log("fin de partie");
+    }
+}
 
 
 function graphisme () {

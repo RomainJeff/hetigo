@@ -4,7 +4,7 @@
     display: inline-block;
     width:950px;
     height:950px;
-    margin-left: 193px;
+    margin-left: 195px;
     left: 0;
 }
 
@@ -76,3 +76,9 @@
     border: 1px solid black;
 }
 
+button {
+    padding: 10px;
+    display: block;
+    margin-top: 300px;
+    position: absolute;
+}
