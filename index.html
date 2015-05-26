@@ -8,26 +8,21 @@
 </head>
 <body>
 	
-	<div id="joueurInfo">
-        <div id="currentPlayer"></div>
-       
-        <div id="blackPlayer"> Black Player (1)
-           <div id="blackPrisoner"></div>
-        </div>
-       
-        <div id="whitePlayer"> White Player (2)
-           <div id="whitePrisoner"></div>
-        </div>
-    </div>
+	<!--
+    <div id="play" onclick="play()"> PLAY </div>
+    -->
+    <form action="game.html" method="GET" onSubmit="return checkForm()">
+        <input type="radio" name="playerMode" value="2" id="2vs2"> <label for="2vs2"> 2 vs 2 </label>
+        <input type="radio" name="playerMode" value="3" id="ia" > <label for="ia"> IA </label>
+        
+        <input type="submit" value="PLAY">
+    </form>
     
-    <button onclick="skipTurn();">Passer</button>
-    
-    <div id="goban"></div>
-    <div id="background"></div>
+    <!--
+    <a href="game.html"> PLAY </a>
+    -->
+    <script type="text/javascript" src="scripts/initGame.js"></script>
 	
-	<script type="text/javascript" src="scripts/initCells.js"></script>
-	<script type="text/javascript" src="scripts/main.js"></script>
 </body>
 </html>
-
 

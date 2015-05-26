@@ -1,4 +1,3 @@
-
 var tour = 1;
 
 var prisoner1 = 0; // Prisoners of player 1 (black)
@@ -220,18 +219,11 @@ function supGroup (x,y) // Deleting the groups
 }
 
 function playerTurn () {
-    if (player == 1) {
-        waitingPlayer = 1;
-        player = 2;
-        
-    } else {
-        waitingPlayer = 2;
-        player = 1;   
-        
-    }
+    var tempPlayer = player;
+    player=waitingPlayer;
+    waitingPlayer= tempPlayer;
     
     skippedTurn=0;
-    console.log(skippedTurn);
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
     document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner2;
     document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner1;
@@ -239,11 +231,12 @@ function playerTurn () {
 
 function skipTurn (){
     skippedTurn++;
+    var tempPlayer = player;
     player=waitingPlayer;
-    console.log(skippedTurn);
-    
-    if (skippedTurn==2){
-        console.log("fin de partie");
+    waitingPlayer= tempPlayer;
+    document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
+    if (skippedTurn==2) {
+        EndGame();
     }
 }
 
@@ -267,4 +260,27 @@ function graphisme () {
             }   
         }
     }
+}
+
+function EndGame() {
+    console.log("fin de partie");
+    
+    /*
+    document.innerHTML="";
+    document.innerHTML="Partie terminée";
+    document.innerHTML="Les points ... ";
+    document.innerHTML="<div onclick='restart()'> REJOUER </div>";
+    document.innerHTML="<div onclick='reset'> Retour au menu </div>";
+    */
+    // Empecher de jouer 
+    // Compter les points
+}
+
+function restart() {
+    // RECOMMENCER
+    
+}
+
+function reset() {
+    // Retour au menu
 }
