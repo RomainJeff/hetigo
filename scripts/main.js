@@ -278,9 +278,13 @@ function EndGame() {
 
 function restart() {
     // RECOMMENCER
-    
+    // Recuperer infos URL
+   
+    //window.location.href = "game.html";
+    window.location.reload();
 }
 
 function reset() {
     // Retour au menu
+    window.location.href = "index.html";
 }

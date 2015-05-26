@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<link rel="stylesheet" type="text/css" href="app/style.css">
+	<link rel="stylesheet" type="text/css" href="app/index_style.css">
 	
 </head>
 <body>
@@ -11,12 +11,21 @@
 	<!--
     <div id="play" onclick="play()"> PLAY </div>
     -->
-    <form action="game.html" method="GET" onSubmit="return checkForm()">
-        <input type="radio" name="playerMode" value="2" id="2vs2"> <label for="2vs2"> 2 vs 2 </label>
-        <input type="radio" name="playerMode" value="3" id="ia" > <label for="ia"> IA </label>
+    <form action="game.html" method="GET" onSubmit="return checkForm()" id="parameters">
+        <div id="mode">
+            <input type="radio" name="playerMode" value="1" id="2vs2"> <label for="2vs2"> 2 vs 2 </label>
+            <input type="radio" name="playerMode" value="2" id="reseau"> <label for="reseau"> Jeu en réseau </label>
+            <input type="radio" name="playerMode" value="3" id="ia" > <label for="ia"> IA </label>
+        </div>
         
+        <div id="handicap">
+            <input class="handicap" type="radio" name="handicap" value="true" id="oui"> <label for="oui"> Handicap </label>
+            <input class="handicap" type="radio" name="handicap" value="false" id="non"> <label for="non"> Pas de handicap </label>
+        </div>
         <input type="submit" value="PLAY">
     </form>
+    
+    <div id="caseErreurs"></div>
     
     <!--
     <a href="game.html"> PLAY </a>

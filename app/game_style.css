@@ -76,9 +76,23 @@
     border: 1px solid black;
 }
 
-button {
+#passer {
     padding: 10px;
     display: block;
     margin-top: 300px;
+    position: absolute;
+}
+
+#restart {
+    padding: 10px;
+    display: block;
+    margin-top: 340px;
+    position: absolute;
+}
+
+#reset {
+    padding: 10px;
+    display: block;
+    margin-top: 380px;
     position: absolute;
 }
