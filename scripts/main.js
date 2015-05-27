@@ -22,16 +22,11 @@ for (var i=0; i<Rows; i++) {
     
     for (var j=0; j<Rows; j++) {
         game[i][j] = new Array();
-        game[i][j][0] = 2;
-        game[i][j][0] = 0;
-        
-        for (var k=0; k<10; k++) {
-            game[i][j][k] = 0;
-        }
+        game[i][j] = 0;
     }
 }
      
-
+var save = new Array (9);
 
 function toggle(cellid) {
     
@@ -40,12 +35,12 @@ function toggle(cellid) {
     var x = parseInt(cellid.substring(0, indexTiret));
     var y = parseInt(cellid.substring(indexTiret+1));
     
-    if (game[x][y][0]!=0 || suicide(x,y)==true || ko(x,y)==true) {
+    if (game[x][y]!=0 || suicide(x,y)==true || ko(x,y)==true) {
         console.log("Impossible de jouer ici");
         // return;
     } else {
-        game[x][y][0]=player;
-        game[x][y][tour%10+1]=player;
+        game[x][y]=player;
+        save[tour%10]= x+"_"+y+"_"+player;
         
         actualisationGroups();
         capture(x,y);
@@ -59,7 +54,7 @@ function toggle(cellid) {
 
 function suicide (x,y) {
     
-    game[x][y][0]=player;
+    game[x][y]=player;
     
     // OPTIMISER CETTE MERDE !!!!!!!! (Mais ca marche)
     var suicide = true;
@@ -68,7 +63,7 @@ function suicide (x,y) {
     for (var i=0; i<Rows; i++) {
         for (var j=0; j<Rows; j++) {
             if (group[i][j]==groupeNum && groupeNum!=0) {
-                if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<Rows && game[i+1][j][0]==0) || ((j+1)<Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) ) {
+                if ( ((j-1)>=0 && game[i][j-1]==0)  || ((i+1)<Rows && game[i+1][j]==0) || ((j+1)<Rows && game[i][j+1]==0) || ((i-1)>=0 && game[i-1][j]==0) ) {
                     suicide = false;
                 }
             }
@@ -76,20 +71,20 @@ function suicide (x,y) {
     }
     
     if (suicide==true) {
-        if ( (y-1)>=0 && game[x][y-1][0]==waitingPlayer && libertiesGroup(x, y-1)==false) {
-            game[x][y][0] = 0;
+        if ( (y-1)>=0 && game[x][y-1]==waitingPlayer && libertiesGroup(x, y-1)==false) {
+            game[x][y] = 0;
             return false;
-        } else if ((x+1)<Rows && game[x+1][y][0]==waitingPlayer && libertiesGroup(x+1, y)==false) {
-            game[x][y][0] = 0;
+        } else if ((x+1)<Rows && game[x+1][y]==waitingPlayer && libertiesGroup(x+1, y)==false) {
+            game[x][y] = 0;
             return false;
-        } else if ((y+1)<Rows && game[x][y+1][0]==waitingPlayer && libertiesGroup(x, y+1)==false) {
-            game[x][y][0] = 0;
+        } else if ((y+1)<Rows && game[x][y+1]==waitingPlayer && libertiesGroup(x, y+1)==false) {
+            game[x][y] = 0;
             return false;
-        } else if ((x-1)>=0 && game[x-1][y][0]==waitingPlayer && libertiesGroup(x-1, y)==false) {
-            game[x][y][0] = 0;
+        } else if ((x-1)>=0 && game[x-1][y]==waitingPlayer && libertiesGroup(x-1, y)==false) {
+            game[x][y] = 0;
             return false;
         } else {
-            game[x][y][0] = 0;
+            game[x][y] = 0;
             console.log("suicide");
             return true;
         }
@@ -100,6 +95,16 @@ function suicide (x,y) {
 
 function ko (x,y)
 {
+    save[tour%10]= x+"_"+y+"_"+player;
+    if (tour>2 && save[(tour-2)%10]==save[tour%10]) {
+        save[tour%10]=0;
+        console.log("ko");
+        return true;
+    } else {
+        save[tour%10]=0;
+        return false;
+    }
+    /*
     game[x][y][tour%10+1]=player;
     if (tour>2 && game[x][y][(tour-2)%10+1]!=0 && game[x][y][(tour-2)%10+1]==game[x][y][tour%10+1]) {
         game[x][y][tour%10+1]=0;
@@ -109,28 +114,29 @@ function ko (x,y)
         game[x][y][tour%10+1]=0;
         return false;
     }
+    */
 }
 
 
 
 function capture (x,y) {
     
-    if ( (y-1)>=0 && game[x][y-1][0]==waitingPlayer) {
+    if ( (y-1)>=0 && game[x][y-1]==waitingPlayer) {
        if (libertiesGroup(x, y-1)==false) {
            supGroup(x, y-1);
         }
     }
-    if ((x+1)<Rows && game[x+1][y][0]==waitingPlayer) {
+    if ((x+1)<Rows && game[x+1][y]==waitingPlayer) {
         if (libertiesGroup(x+1, y)==false) {
            supGroup(x+1, y);
         }
     }
-    if ((y+1)<Rows && game[x][y+1][0]==waitingPlayer) {
+    if ((y+1)<Rows && game[x][y+1]==waitingPlayer) {
         if (libertiesGroup(x, y+1)==false) {
            supGroup(x, y+1);
         }
     }
-    if ((x-1)>=0 && game[x-1][y][0]==waitingPlayer) {
+    if ((x-1)>=0 && game[x-1][y]==waitingPlayer) {
         if (libertiesGroup(x-1, y)==false) {
            supGroup(x-1, y);
         }
@@ -152,7 +158,7 @@ function actualisationGroups () {
     
     for (i=0; i<Rows; i++) {
         for (j=0; j<Rows; j++) {
-            if ( game[i][j][0]==0) {
+            if ( game[i][j]==0) {
                 group[i][j]=0;
             } else if (group[i][j]===undefined) {
                 groupRecursive(i,j);
@@ -163,16 +169,16 @@ function actualisationGroups () {
     
     function groupRecursive (x,y) {
         group[x][y]=num_Group;
-        if ( (y-1)>=0 && game[x][y][0] == game[x][y-1][0] && group[x][y-1]===undefined) {
+        if ( (y-1)>=0 && game[x][y] == game[x][y-1] && group[x][y-1]===undefined) {
             groupRecursive(x, (y-1));
         }
-        if ( (x+1)<Rows && game[x][y][0] == game[x+1][y][0] && group[x+1][y]===undefined) {
+        if ( (x+1)<Rows && game[x][y] == game[x+1][y] && group[x+1][y]===undefined) {
             groupRecursive((x+1), y);
         }
-        if ( (y+1)<Rows && game[x][y][0] == game[x][y+1][0] && group[x][y+1]===undefined) {
+        if ( (y+1)<Rows && game[x][y] == game[x][y+1] && group[x][y+1]===undefined) {
             groupRecursive(x, (y+1));
         }
-        if ( (x-1)>=0 && game[x][y][0] == game[x-1][y][0] && group[x-1][y]===undefined) {
+        if ( (x-1)>=0 && game[x][y] == game[x-1][y] && group[x-1][y]===undefined) {
             groupRecursive((x-1), y);
         }
         return;
@@ -188,7 +194,7 @@ function libertiesGroup (x,y) {// Seeking the liberties of a group
     for (var i=0; i<Rows; i++) {
         for (var j=0; j<Rows; j++) {
             if (group[i][j]==groupNum && groupNum!=0) {
-                if ( ((j-1)>=0 && game[i][j-1][0]==0)  || ((i+1)<Rows && game[i+1][j][0]==0) || ((j+1)<Rows && game[i][j+1][0]==0) || ((i-1)>=0 && game[i-1][j][0]==0) ) {
+                if ( ((j-1)>=0 && game[i][j-1]==0)  || ((i+1)<Rows && game[i+1][j]==0) || ((j+1)<Rows && game[i][j+1]==0) || ((i-1)>=0 && game[i-1][j]==0) ) {
                     return true; // This group has at least one liberty
                 }
             }
@@ -206,7 +212,7 @@ function supGroup (x,y) // Deleting the groups
     for (var i=0; i<Rows; i++) {
         for (var j=0; j<Rows; j++) {
             if (group[i][j]==groupNum) {
-                game[i][j][0] = 0; // Every cell of this group is now empty
+                game[i][j] = 0; // Every cell of this group is now empty
                 if (player==1) {
                     prisoner1++;
                 } else {
@@ -244,16 +250,16 @@ function skipTurn (){
 function graphisme () {
     for (var i=0; i<Rows; i++) {
         for (var j=0; j<Rows; j++) {
-            if (game[i][j][0]==0) {
+            if (game[i][j]==0) {
                 var element = document.getElementById(i+"_"+j);
                 element.setAttribute("class", "empty");
             } 
-            if (game[i][j][0]==1)
+            if (game[i][j]==1)
             {
                 var element = document.getElementById(i+"_"+j);
                 element.setAttribute("class", "black");
             }
-            else if (game[i][j][0]==2)
+            else if (game[i][j]==2)
             {
                 var element = document.getElementById(i+"_"+j);
                 element.setAttribute("class", "white");
