@@ -6,8 +6,8 @@ prisoner[2]=0; // Prisoners of player 2 (white)
 
 var skippedTurn = 0;
 
-var player = 1; // 1 = black, 2 = white
-var waitingPlayer = 2;
+//var player = 1; // 1 = black, 2 = white
+//var waitingPlayer = 2;
 
 var pointsPlayers = new Array() ; // points of each players: pointsPlayer[1]=black player & pointsPlayer[2]=white player
 
@@ -236,13 +236,44 @@ function supGroup (x,y) // Deleting the groups
     }
 }
 
+function iamode() {
+
+    var random = parseInt(Math.floor(Math.random() *18))+'_'+parseInt(Math.floor(Math.random() *18));
+    
+    console.log('"'+random+'"');
+
+    console.log("IA joue");
+    toggle(random);
+    tempPlayer = player;
+    player = waitingPlayer;
+    waitingPlayer = tempPlayer;
+    console.log("player2=" + player);
+}
+
 function playerTurn () {
+
     var tempPlayer = player;
-    player=waitingPlayer;
-    waitingPlayer= tempPlayer;
+
+    if (playerMode == 1){
+ 
+    player = waitingPlayer;
+    waitingPlayer = tempPlayer;
+}
+else if (playerMode == 3){
+    if (player == 1){
+       
+
+        tempPlayer = player;
+        player = waitingPlayer;
+        waitingPlayer = tempPlayer;
+        console.log("player1=" + player);
+        setTimeout('iamode()',300);
+        
+    }
     
     skippedTurn=0;
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
+}
 }
 
 function skipTurn (){
@@ -250,12 +281,14 @@ function skipTurn (){
     turn++;
     var tempPlayer = player;
     player=waitingPlayer;
+
     waitingPlayer= tempPlayer;
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
     if (skippedTurn==2) {
         EndGame();
     }
-}
+     }
+
 
 
 function graphisme () {
