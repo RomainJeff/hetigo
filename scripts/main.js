@@ -29,17 +29,27 @@ for (var i=0; i<Rows; i++) {
      
 var saveTurn = new Array (9); // Save of the last 10 turn
 
-graphisme();
 
-if (handicap=="true") {
-    console.log("handicap");
+if (handicap!=0) {
     handicapSetUp();
 }
 
 function handicapSetUp() {
-    
+    game[3][3]=1;
+    game[3][15]=1;
+    game[9][9]=1;
+    game[15][15]=1;
+    game[15][3]=1;
+    if (handicap==9) {
+        game[9][3]=1;
+        game[3][9]=1;
+        game[9][15]=1;
+        game[15][9]=1;
+    }
+    playerTurn();
 }
 
+graphisme();
 
 function toggle(cellid) {
     
@@ -57,9 +67,9 @@ function toggle(cellid) {
         
         actualisationGroups();
         capture(x,y);
-        graphisme();
         turn++;
         playerTurn();
+        graphisme();
     }
 }
 
@@ -274,7 +284,7 @@ function graphisme () {
 
 function EndGame() {
     countPoints();
-    window.alert("fin de partie");
+    window.alert("Fin de la partie ! Joueur noir à " + pointsPlayers[1] + "points et blanc " + pointsPlayers[2] + "points");
     
     /*
     document.innerHTML="";
@@ -290,7 +300,9 @@ function EndGame() {
 function countPoints () {
     pointsPlayers[1] = 0;
     pointsPlayers[2] = 5.5; // Black player has an advantage as the first player to play, so the white play has 5.5 points already
-    
+    if (handicap != 0) {
+        pointsPlayers[2] = parseInt(handicap);
+    }
     // Count the number of pawn of each player
     for (var i = 0; i<Rows; i++) {
         for (var j = 0; j<Rows; j++) {
@@ -307,12 +319,12 @@ function countPoints () {
 }
 
 function restart() {
-    // Recommencer partie avec même paramètres
+    // Restart the game with the same parameters
     window.location.reload();
 }
 
 function reset() {
-    // Retour au menu
+    // Back to the menu
     window.location.href = "index.html";
 }
 
