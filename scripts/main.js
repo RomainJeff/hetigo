@@ -1,7 +1,8 @@
 var tour = 1;
 
-var prisoner1 = 0; // Prisoners of player 1 (black)
-var prisoner2 = 0; // Prisoners of player 2 (white) 
+var prisoner = new Array();
+prisoner[1]=0; // Prisoners of player 1 (black)
+prisoner[2]=0; // Prisoners of player 2 (white)
 
 var skippedTurn = 0;
 
@@ -26,7 +27,7 @@ for (var i=0; i<Rows; i++) {
     }
 }
      
-var save = new Array (9);
+var saveTurn = new Array (9);
 
 function toggle(cellid) {
     
@@ -40,7 +41,7 @@ function toggle(cellid) {
         // return;
     } else {
         game[x][y]=player;
-        save[tour%10]= x+"_"+y+"_"+player;
+        saveTurn[tour%10]= x+"_"+y+"_"+player;
         
         actualisationGroups();
         capture(x,y);
@@ -95,13 +96,13 @@ function suicide (x,y) {
 
 function ko (x,y)
 {
-    save[tour%10]= x+"_"+y+"_"+player;
-    if (tour>2 && save[(tour-2)%10]==save[tour%10]) {
-        save[tour%10]=0;
+    saveTurn[tour%10]= x+"_"+y+"_"+player;
+    if (tour>2 && saveTurn[(tour-2)%10]==saveTurn[tour%10]) {
+        saveTurn[tour%10]=0;
         console.log("ko");
         return true;
     } else {
-        save[tour%10]=0;
+        saveTurn[tour%10]=0;
         return false;
     }
     /*
@@ -214,9 +215,9 @@ function supGroup (x,y) // Deleting the groups
             if (group[i][j]==groupNum) {
                 game[i][j] = 0; // Every cell of this group is now empty
                 if (player==1) {
-                    prisoner1++;
+                    prisoner[1]++;
                 } else {
-                    prisoner2++;
+                    prisoner[2]++;
                 }
                 
             }
@@ -231,12 +232,13 @@ function playerTurn () {
     
     skippedTurn=0;
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
-    document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner2;
-    document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner1;
+    document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner[2];
+    document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner[1];
 }
 
 function skipTurn (){
     skippedTurn++;
+    tour++;
     var tempPlayer = player;
     player=waitingPlayer;
     waitingPlayer= tempPlayer;
@@ -269,6 +271,7 @@ function graphisme () {
 }
 
 function EndGame() {
+    window.alert("fin de partie");
     console.log("fin de partie");
     
     /*
@@ -293,4 +296,40 @@ function restart() {
 function reset() {
     // Retour au menu
     window.location.href = "index.html";
+}
+
+
+function saveGame() {
+    console.log("save");
+    var game_save = JSON.stringify(game);
+    var saveTurn_save = JSON.stringify(saveTurn);
+    var tour_save = JSON.stringify(tour);
+    var player_save = JSON.stringify(waitingPlayer);
+    var waitingPlayer_save = JSON.stringify(player);
+    var prisoner_save = JSON.stringify(prisoner);
+    var skippedTurn_save = JSON.stringify(skippedTurn);
+    localStorage.setItem('game_save', game_save);
+    localStorage.setItem('saveTurn_save', saveTurn_save);
+    localStorage.setItem('tour_save', tour_save);
+    localStorage.setItem('player_save', player_save);
+    localStorage.setItem('waitingPlayer_save', waitingPlayer_save);
+    localStorage.setItem('prisoner_save', prisoner_save);
+    localStorage.setItem('skippedTurn_save', skippedTurn_save);
+}
+
+function reload() {
+    console.log("reload");
+    if (localStorage.getItem('game_save') == null) {
+        window.alert("Aucun état de jeu sauvegardé !");
+    } else {
+        game = JSON.parse(localStorage.getItem('game_save'));
+        saveTurn = JSON.parse(localStorage.getItem('saveTurn_save'));
+        tour = JSON.parse(localStorage.getItem('tour_save'));
+        prisoner = JSON.parse(localStorage.getItem('prisoner_save'));
+        player = JSON.parse(localStorage.getItem('player_save'));
+        waitingPlayer = JSON.parse(localStorage.getItem('waitingPlayer_save'));
+        skippedTurn = JSON.parse(localStorage.getItem('skippedTurn_save'));
+        graphisme();
+        playerTurn();
+    }
 }

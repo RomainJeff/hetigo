@@ -96,3 +96,17 @@
     margin-top: 380px;
     position: absolute;
 }
+
+#save {
+    padding: 10px;
+    display: block;
+    margin-top: 420px;
+    position: absolute;
+}
+
+#reload {
+    padding: 10px;
+    display: block;
+    margin-top: 460px;
+    position: absolute;
+}
