@@ -35,3 +35,5 @@ function backgroundBoard(){
     }
     document.getElementById("background").innerHTML = bg;
 }
+
+

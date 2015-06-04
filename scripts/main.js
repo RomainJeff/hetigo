@@ -1,4 +1,4 @@
-var tour = 1;
+var turn = 1; // Turn number
 
 var prisoner = new Array();
 prisoner[1]=0; // Prisoners of player 1 (black)
@@ -6,18 +6,18 @@ prisoner[2]=0; // Prisoners of player 2 (white)
 
 var skippedTurn = 0;
 
-var player = 2; // 1 = black, 2 = white
-var waitingPlayer = 1;
-playerTurn();
+var player = 1; // 1 = black, 2 = white
+var waitingPlayer = 2;
 
-var group = new Array();
+var pointsPlayers = new Array() ; // points of each players: pointsPlayer[1]=black player & pointsPlayer[2]=white player
+
+var group = new Array(); // Number of group/chain of each cell
 for (var i=0; i<Rows; i++) {
     group[i] = new Array ();
 }
 
 
-
-var game = new Array(); 
+var game = new Array(); // Game state
 for (var i=0; i<Rows; i++) {
     game[i] = new Array ();
     
@@ -27,7 +27,19 @@ for (var i=0; i<Rows; i++) {
     }
 }
      
-var saveTurn = new Array (9);
+var saveTurn = new Array (9); // Save of the last 10 turn
+
+graphisme();
+
+if (handicap=="true") {
+    console.log("handicap");
+    handicapSetUp();
+}
+
+function handicapSetUp() {
+    
+}
+
 
 function toggle(cellid) {
     
@@ -41,12 +53,12 @@ function toggle(cellid) {
         // return;
     } else {
         game[x][y]=player;
-        saveTurn[tour%10]= x+"_"+y+"_"+player;
+        saveTurn[turn%10]= x+"_"+y+"_"+player;
         
         actualisationGroups();
         capture(x,y);
         graphisme();
-        tour++;
+        turn++;
         playerTurn();
     }
 }
@@ -96,26 +108,15 @@ function suicide (x,y) {
 
 function ko (x,y)
 {
-    saveTurn[tour%10]= x+"_"+y+"_"+player;
-    if (tour>2 && saveTurn[(tour-2)%10]==saveTurn[tour%10]) {
-        saveTurn[tour%10]=0;
+    saveTurn[turn%10]= x+"_"+y+"_"+player;
+    if (turn>2 && saveTurn[(turn-2)%10]==saveTurn[turn%10]) {
+        saveTurn[turn%10]=0;
         console.log("ko");
         return true;
     } else {
-        saveTurn[tour%10]=0;
+        saveTurn[turn%10]=0;
         return false;
     }
-    /*
-    game[x][y][tour%10+1]=player;
-    if (tour>2 && game[x][y][(tour-2)%10+1]!=0 && game[x][y][(tour-2)%10+1]==game[x][y][tour%10+1]) {
-        game[x][y][tour%10+1]=0;
-        console.log("ko");
-        return true;
-    } else {
-        game[x][y][tour%10+1]=0;
-        return false;
-    }
-    */
 }
 
 
@@ -232,13 +233,11 @@ function playerTurn () {
     
     skippedTurn=0;
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
-    document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner[2];
-    document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner[1];
 }
 
 function skipTurn (){
     skippedTurn++;
-    tour++;
+    turn++;
     var tempPlayer = player;
     player=waitingPlayer;
     waitingPlayer= tempPlayer;
@@ -250,6 +249,9 @@ function skipTurn (){
 
 
 function graphisme () {
+    document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
+    document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner[2];
+    document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner[1];
     for (var i=0; i<Rows; i++) {
         for (var j=0; j<Rows; j++) {
             if (game[i][j]==0) {
@@ -271,8 +273,8 @@ function graphisme () {
 }
 
 function EndGame() {
+    countPoints();
     window.alert("fin de partie");
-    console.log("fin de partie");
     
     /*
     document.innerHTML="";
@@ -285,11 +287,27 @@ function EndGame() {
     // Compter les points
 }
 
+function countPoints () {
+    pointsPlayers[1] = 0;
+    pointsPlayers[2] = 5.5; // Black player has an advantage as the first player to play, so the white play has 5.5 points already
+    
+    // Count the number of pawn of each player
+    for (var i = 0; i<Rows; i++) {
+        for (var j = 0; j<Rows; j++) {
+            if (game[i][j]==1) {
+                pointsPlayers[1]++;
+            } else if (game[i][j]==2) {
+                pointsPlayers[2]++;
+            }
+        }
+    }
+    
+    // Count the territories of each player
+    
+}
+
 function restart() {
-    // RECOMMENCER
-    // Recuperer infos URL
-   
-    //window.location.href = "game.html";
+    // Recommencer partie avec même paramètres
     window.location.reload();
 }
 
@@ -303,14 +321,14 @@ function saveGame() {
     console.log("save");
     var game_save = JSON.stringify(game);
     var saveTurn_save = JSON.stringify(saveTurn);
-    var tour_save = JSON.stringify(tour);
-    var player_save = JSON.stringify(waitingPlayer);
-    var waitingPlayer_save = JSON.stringify(player);
+    var turn_save = JSON.stringify(turn);
+    var player_save = JSON.stringify(player);
+    var waitingPlayer_save = JSON.stringify(waitingPlayer);
     var prisoner_save = JSON.stringify(prisoner);
     var skippedTurn_save = JSON.stringify(skippedTurn);
     localStorage.setItem('game_save', game_save);
     localStorage.setItem('saveTurn_save', saveTurn_save);
-    localStorage.setItem('tour_save', tour_save);
+    localStorage.setItem('turn_save', turn_save);
     localStorage.setItem('player_save', player_save);
     localStorage.setItem('waitingPlayer_save', waitingPlayer_save);
     localStorage.setItem('prisoner_save', prisoner_save);
@@ -324,12 +342,11 @@ function reload() {
     } else {
         game = JSON.parse(localStorage.getItem('game_save'));
         saveTurn = JSON.parse(localStorage.getItem('saveTurn_save'));
-        tour = JSON.parse(localStorage.getItem('tour_save'));
+        turn = JSON.parse(localStorage.getItem('turn_save'));
         prisoner = JSON.parse(localStorage.getItem('prisoner_save'));
         player = JSON.parse(localStorage.getItem('player_save'));
         waitingPlayer = JSON.parse(localStorage.getItem('waitingPlayer_save'));
         skippedTurn = JSON.parse(localStorage.getItem('skippedTurn_save'));
         graphisme();
-        playerTurn();
     }
 }
