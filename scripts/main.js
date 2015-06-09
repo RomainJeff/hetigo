@@ -16,6 +16,7 @@ for (var i=0; i<Rows; i++) {
     group[i] = new Array ();
 }
 
+var numLibGroup =  new Array();
 
 var game = new Array(); // Game state
 for (var i=0; i<Rows; i++) {
@@ -50,6 +51,10 @@ function handicapSetUp() {
 }
 
 graphisme();
+
+
+// -----------------------------------------SET UP------------------------------------------- //
+
 
 function toggle(cellid) {
     
@@ -94,16 +99,16 @@ function suicide (x,y) {
     }
     
     if (suicide==true) {
-        if ( (y-1)>=0 && game[x][y-1]==waitingPlayer && libertiesGroup(x, y-1)==false) {
+        if ( (y-1)>=0 && game[x][y-1]==waitingPlayer && numLibGroup[(group[x][y-1])]==0) {
             game[x][y] = 0;
             return false;
-        } else if ((x+1)<Rows && game[x+1][y]==waitingPlayer && libertiesGroup(x+1, y)==false) {
+        } else if ((x+1)<Rows && game[x+1][y]==waitingPlayer && numLibGroup[(group[x+1][y])]==0) {
             game[x][y] = 0;
             return false;
-        } else if ((y+1)<Rows && game[x][y+1]==waitingPlayer && libertiesGroup(x, y+1)==false) {
+        } else if ((y+1)<Rows && game[x][y+1]==waitingPlayer && numLibGroup[(group[x][y+1])]==0) {
             game[x][y] = 0;
             return false;
-        } else if ((x-1)>=0 && game[x-1][y]==waitingPlayer && libertiesGroup(x-1, y)==false) {
+        } else if ((x-1)>=0 && game[x-1][y]==waitingPlayer && numLibGroup[(group[x-1][y])]==0) {
             game[x][y] = 0;
             return false;
         } else {
@@ -133,26 +138,19 @@ function ko (x,y)
 
 function capture (x,y) {
     
-    if ( (y-1)>=0 && game[x][y-1]==waitingPlayer) {
-       if (libertiesGroup(x, y-1)==false) {
-           supGroup(x, y-1);
-        }
+    if ( (y-1)>=0 && game[x][y-1]==waitingPlayer && numLibGroup[(group[x][y-1])]==0) {
+        supGroup(x, y-1);
     }
-    if ((x+1)<Rows && game[x+1][y]==waitingPlayer) {
-        if (libertiesGroup(x+1, y)==false) {
-           supGroup(x+1, y);
-        }
+    if ((x+1)<Rows && game[x+1][y]==waitingPlayer && numLibGroup[(group[x+1][y])]==0) {
+        supGroup(x+1, y);
     }
-    if ((y+1)<Rows && game[x][y+1]==waitingPlayer) {
-        if (libertiesGroup(x, y+1)==false) {
-           supGroup(x, y+1);
-        }
+    if ((y+1)<Rows && game[x][y+1]==waitingPlayer && numLibGroup[(group[x][y+1])]==0) {
+        supGroup(x, y+1);
     }
-    if ((x-1)>=0 && game[x-1][y]==waitingPlayer) {
-        if (libertiesGroup(x-1, y)==false) {
-           supGroup(x-1, y);
-        }
+    if ((x-1)>=0 && game[x-1][y]==waitingPlayer && numLibGroup[(group[x-1][y])]==0) {
+        supGroup(x-1, y);
     }
+    
 }
 
 
@@ -168,6 +166,10 @@ function actualisationGroups () {
         }
     }
     
+    for(var i =0; i< numLibGroup.length; i++) {
+        numLibGroup[i] = 0;
+    }
+    
     for (i=0; i<Rows; i++) {
         for (j=0; j<Rows; j++) {
             if ( game[i][j]==0) {
@@ -181,20 +183,44 @@ function actualisationGroups () {
     
     function groupRecursive (x,y) {
         group[x][y]=num_Group;
+        numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        
         if ( (y-1)>=0 && game[x][y] == game[x][y-1] && group[x][y-1]===undefined) {
+           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive(x, (y-1));
         }
         if ( (x+1)<Rows && game[x][y] == game[x+1][y] && group[x+1][y]===undefined) {
+           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive((x+1), y);
         }
         if ( (y+1)<Rows && game[x][y] == game[x][y+1] && group[x][y+1]===undefined) {
+           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive(x, (y+1));
         }
         if ( (x-1)>=0 && game[x][y] == game[x-1][y] && group[x-1][y]===undefined) {
+           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive((x-1), y);
         }
         return;
     }
+    
+    function libertiesCell(x,y) {
+        var nbLiberties = 0;
+        if ((y-1)>=0 && game[x][y-1]==0) {
+            nbLiberties ++;
+        }
+        if ((x+1)<Rows && game[x+1][y]==0) {
+            nbLiberties ++;
+        }
+        if ((y+1)<Rows && game[x][y+1]==0) {
+            nbLiberties ++;
+        }
+        if ((x-1)>=0 && game[x-1][y]==0) {
+            nbLiberties ++;
+        }
+        return nbLiberties;
+    }
+    
 }
 
 
@@ -203,15 +229,12 @@ function actualisationGroups () {
 function libertiesGroup (x,y) {// Seeking the liberties of a group
     actualisationGroups();
     var groupNum = group[x][y];
-    for (var i=0; i<Rows; i++) {
-        for (var j=0; j<Rows; j++) {
-            if (group[i][j]==groupNum && groupNum!=0) {
-                if ( ((j-1)>=0 && game[i][j-1]==0)  || ((i+1)<Rows && game[i+1][j]==0) || ((j+1)<Rows && game[i][j+1]==0) || ((i-1)>=0 && game[i-1][j]==0) ) {
-                    return true; // This group has at least one liberty
-                }
-            }
-        }
+
+    if (numLibGroup[groupNum]!=0 && numLibGroup!=undefined) 
+    {
+        return true; // This group has at least one liberty
     }
+    
     return false; // The group has not liberties left
 }
 

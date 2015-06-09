@@ -5,6 +5,22 @@ function checkForm () {
 	var erreur=false;
 	var texteErreur=new Array();
 
+    
+    var perso=formulaire.elements["perso"];
+	var check=false;
+	for (var i=0; i<mode.length; i++)
+	{
+		if(perso[i].checked==true)
+		{
+			check=true;
+		}
+	}
+	if(check==false){
+		erreur=true;
+		texteErreur[texteErreur.length]="Sélectionnez votre personnage";
+	}
+    
+    
 	var mode=formulaire.elements["playerMode"];
 	var check=false;
 	for (var i=0; i<mode.length; i++)

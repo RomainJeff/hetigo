@@ -12,6 +12,11 @@
     <div id="play" onclick="play()"> PLAY </div>
     -->
     <form action="game.html" method="GET" onSubmit="return checkForm()" id="parameters">
+        <div id="perso">
+            <input type="radio" name="perso" value="1" id="alice"> <label for="alice"> Alice </label>
+            <input type="radio" name="perso" value="2" id="dr"> <label for="dr"> Docteur </label>
+        </div>
+        
         <div id="mode">
             <input type="radio" name="playerMode" value="1" id="2vs2"> <label for="2vs2"> 2 vs 2 </label>
             <input type="radio" name="playerMode" value="2" id="reseau"> <label for="reseau"> Jeu en réseau </label>
