@@ -39,8 +39,8 @@ function backgroundBoard(){
 }
 
 // Declaration des clicks
-    for (var i=0; i < (Rows-1); i++) {
-        for (var j=0; j< (Rows-1); j++) {
+    for (var i=0; i < Rows; i++) {
+        for (var j=0; j< Rows; j++) {
             document.getElementById(i +'_'+ j).addEventListener("click", function(){
                 var cellid = this.id;
 
