@@ -2,20 +2,20 @@ var Rows = 19;
 
 var player = 1; // 1 = black, 2 = white
 var waitingPlayer = 2;
+
 displayCellState();
 backgroundBoard();
 
 
-
 function displayCellState() {
     
-    var grid='';
+    var grid = '';
 
 
-    for (var i=0;i<Rows; i++) {	
+    for (var i = 0; i < Rows; i++) {	
         
-        for (var j=0;j<Rows; j++){ 
-            grid+= '<div id="'+i+'_'+j+'"class="empty" ></div>';
+        for (var j = 0;j < Rows; j++){ 
+            grid += '<div id="'+ i +'_'+ j +'"class="empty" ></div>';
         }	 
 
     }
@@ -23,24 +23,24 @@ function displayCellState() {
     document.getElementById("goban").innerHTML = grid;
 }
 
-function backgroundBoard(){
+function backgroundBoard() {
     
-    var bg='';
+    var bg = '';
     
 
     
-    for (var i=0;i<(Rows-1); i++) {
-        for (var j=0;j<(Rows-1); j++){  
-            bg+='<div class="bgIntersection"></div>';
+    for (var i = 0;i < (Rows-1); i++) {
+        for (var j = 0;j < (Rows-1); j++){  
+            bg += '<div class="bgIntersection"></div>';
         }
-  
     }
+
     document.getElementById("background").innerHTML = bg;
 }
 
 // Declaration des clicks
-    for (var i=0; i < Rows; i++) {
-        for (var j=0; j< Rows; j++) {
+    for (var i = 0; i < Rows; i++) {
+        for (var j = 0; j < Rows; j++) {
             document.getElementById(i +'_'+ j).addEventListener("click", function(){
                 var cellid = this.id;
 
