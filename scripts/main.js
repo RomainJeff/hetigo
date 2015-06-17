@@ -18,6 +18,12 @@ for (var i=0; i<Rows; i++) {
 
 var numLibGroup =  new Array();
 
+// -------------------------//
+var territories = new  Array();
+// territories[*]== The territory number* belong to: 1==black, 2==white, 3==nobody
+
+// -------------------------//
+
 var game = new Array(); // Game state
 for (var i=0; i<Rows; i++) {
     game[i] = new Array ();
@@ -30,6 +36,7 @@ for (var i=0; i<Rows; i++) {
      
 var saveTurn = new Array (9); // Save of the last 10 turn
 
+var countPointsFunction = false;
 
 if (handicap!=0) {
     handicapSetUp();
@@ -172,33 +179,43 @@ function actualisationGroups () {
     
     for (i=0; i<Rows; i++) {
         for (j=0; j<Rows; j++) {
-            if ( game[i][j]==0) {
-                group[i][j]=0;
-            } else if (group[i][j]===undefined) {
-                groupRecursive(i,j);
-                num_Group++;
+            if (countPointsFunction == true ) { // When counting the points, creates groups of empty cells for territories
+                if ( game[i][j]!=0) {
+                    group[i][j]=0;
+                } else if (group[i][j]===undefined) {
+                    groupRecursive(i,j);
+                    num_Group++;
+                }
+            } else { // Else, during the game, creates groups of cells of each player
+                if ( game[i][j]==0) {
+                    group[i][j]=0;
+                } else if (group[i][j]===undefined) {
+                    groupRecursive(i,j);
+                    num_Group++;
+                }
             }
         }
     }
     
     function groupRecursive (x,y) {
         group[x][y]=num_Group;
-        numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        
+        if (countPointsFunction == false ) { // Count the liberties only when creating cells groups
+            numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        } else {
+            territoriesNeighboors(x,y);
+        }
         
         if ( (y-1)>=0 && game[x][y] == game[x][y-1] && group[x][y-1]===undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive(x, (y-1));
         }
         if ( (x+1)<Rows && game[x][y] == game[x+1][y] && group[x+1][y]===undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive((x+1), y);
         }
         if ( (y+1)<Rows && game[x][y] == game[x][y+1] && group[x][y+1]===undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive(x, (y+1));
         }
         if ( (x-1)>=0 && game[x][y] == game[x-1][y] && group[x-1][y]===undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
             groupRecursive((x-1), y);
         }
         return;
@@ -221,23 +238,38 @@ function actualisationGroups () {
         return nbLiberties;
     }
     
-}
-
-
-
-
-function libertiesGroup (x,y) {// Seeking the liberties of a group
-    actualisationGroups();
-    var groupNum = group[x][y];
-
-    if (numLibGroup[groupNum]!=0 && numLibGroup!=undefined) 
-    {
-        return true; // This group has at least one liberty
+    function territoriesNeighboors(x,y) {
+        if ((y-1)>=0 && game[x][y-1]!=0) {
+            if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x][y-1];
+            } else if (territories[num_Group]!=game[x][y-1]) {
+                territories[num_Group]=3;
+            }
+        }
+        if ((x+1)<Rows && game[x+1][y]!=0) {
+            if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x+1][y];
+            } else if (territories[num_Group]!=game[x+1][y]) {
+                territories[num_Group]=3;
+            }
+        }
+        if ((y+1)<Rows && game[x][y+1]!=0) {
+            if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x][y+1];
+            } else if (territories[num_Group]!=game[x][y+1]) {
+                territories[num_Group]=3;
+            }
+        }
+        if ((x-1)>=0 && game[x-1][y]!=0) {
+           if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x-1][y];
+            } else if (territories[num_Group]!=game[x-1][y]) {
+                territories[num_Group]=3;
+            }
+        }
     }
     
-    return false; // The group has not liberties left
 }
-
 
 
 
@@ -318,6 +350,7 @@ function graphisme () {
     document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
     document.getElementById("whitePrisoner").innerHTML="Prisoners: "+ prisoner[2];
     document.getElementById("blackPrisoner").innerHTML="Prisoners: "+ prisoner[1];
+    
     for (var i=0; i<Rows; i++) {
         for (var j=0; j<Rows; j++) {
             if (game[i][j]==0) {
@@ -371,7 +404,33 @@ function countPoints () {
     }
     
     // Count the territories of each player
-    
+    countPointsFunction = true;
+    actualisationGroups();
+    countPointsFunction = false;
+    for (var i=0; i<territories.length; i++) {
+        if (territories[i]==1) {
+            for (var k=0; k<Rows; k++) {
+                for (var l=0; l<Rows; l++) {
+                    if (group[k][l]==i) {
+                        pointsPlayers[1]++;
+                        var element = document.getElementById(k+"_"+l);
+                        element.setAttribute("class", "territory_black");
+                    }
+                }
+            }
+        }
+        if (territories[i]==2) {
+            for (var k=0; k<Rows; k++) {
+                for (var l=0; l<Rows; l++) {
+                    if (group[k][l]==i) {
+                        pointsPlayers[2]++;
+                        var element = document.getElementById(k+"_"+l);
+                        element.setAttribute("class", "territory_white");
+                    }
+                }
+            }
+        }
+    }
 }
 
 function restart() {
