@@ -235,7 +235,29 @@ function actualisationGroups () {
         }
     }
 
-    console.log("numgroup"+num_Group);
+    
+    if (countPointsFunction==false) {
+        for (var i=0; i<numLibGroup.length; i++) {
+            numLibGroup[i]=fixLiberties(i);
+        }
+        
+    }
+    
+    function fixLiberties (groupNb) {
+        
+        for (var i =0; i< Rows; i++) {
+            for (var j=0; j<Rows; j++) {
+                if (group[i][j]==groupNb) {
+                    if ( (j-1) >= 0 && (i-1) >= 0 && group[i - 1][j]==groupNb && group[i - 1][j - 1]==groupNb) { numLibGroup[groupNb]--; };
+                    if ( (i-1) >= 0 && (j+1) < Rows && group[i - 1][j]==groupNb && group[i - 1][j + 1]==groupNb) { numLibGroup[groupNb]--; };
+                    if ( (j-1) >= 0 && (i+1) < Rows && group[i + 1][j]==groupNb && group[i + 1][j - 1]==groupNb) { numLibGroup[groupNb]--; };
+                    if ( (j+1) < Rows && (i+1) < Rows && group[i + 1][j]==groupNb && group[i + 1][j + 1]==groupNb) { numLibGroup[groupNb]--; };
+                }
+            }
+        }
+        
+        return numLibGroup[groupNb];
+    }
     
 }
 
@@ -281,6 +303,7 @@ function iamode () {
             if (game[i][j] == 1 && group[i][j] != undefined) {
                 console.log("trouvé");
 
+                presence = false;
                 // on cherche dans le tableau créé si le groupe du pion analysé est déjà stocké
                 for (var k = 0; k <= num_GRPADVS.length; k++) {
 
@@ -288,15 +311,10 @@ function iamode () {
                     if (num_GRPADVS[k] == group[i][j]) {
                         console.log("test2");
                         presence = true;
-                    } else if (num_GRPADVS[k] != group[i][j]) {
-                        console.log("test3");
-                        presence = false;
-                    }
-
+                    } 
                 }
 
                 // s'il n'est pas stocké, on le stock haha
-
                 if (presence === false){
                     console.log("test4");
                     console.log("alo"+group[i][j]);
