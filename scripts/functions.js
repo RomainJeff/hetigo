@@ -379,11 +379,62 @@ function iamode () {
         return extPionsIntGr;
     }
     
+    function play () {
+        var tabExtPionsIntGr = extremiteIntGr();
+        console.log(tabExtPionsIntGr);
 
-    var tabExtPionsIntGr = extremiteIntGr();
-    console.log(tabExtPionsIntGr);
+        // on prend un chiffre au hasard entre 0 et le nombre total de pierre d'extrémité
+        var whichOne = Math.floor(Math.random()* tabExtPionsIntGr.length);
 
-    var random = parseInt(Math.floor(Math.random() * (Rows-1))) +'_'+ parseInt(Math.floor(Math.random() * (Rows-1)));
+        // on récupère les coordonnées du pion corresondant au numéro tiré
+        var selectedStoneCoord = tabExtPionsIntGr[whichOne];
+
+        console.log("lol:");
+        console.log(tabExtPionsIntGr[whichOne]);
+
+        var tabSelectedStoneCoord = [];
+
+        // on determine quelles sont les coordonnées des libertés de ce pion et on stock les coordonnées du dans un tableau
+        if (tabExtPionsIntGr[whichOne].x != Rows-1 && game[tabExtPionsIntGr[whichOne].x +1][tabExtPionsIntGr[whichOne].y] == 0) {
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x+1, y: tabExtPionsIntGr[whichOne].y});
+        }
+
+        if (tabExtPionsIntGr[whichOne].x != 0 && game[tabExtPionsIntGr[whichOne].x -1][tabExtPionsIntGr[whichOne].y] == 0) {
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x-1, y: tabExtPionsIntGr[whichOne].y});
+        }
+
+        if (tabExtPionsIntGr[whichOne].y != Rows-1 && game[tabExtPionsIntGr[whichOne].x][tabExtPionsIntGr[whichOne].y+1] == 0) {
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x, y: tabExtPionsIntGr[whichOne].y+1});
+        }
+
+        if (tabExtPionsIntGr[whichOne].y != 0 && game[tabExtPionsIntGr[whichOne].x][tabExtPionsIntGr[whichOne].y-1] == 0) {
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x, y: tabExtPionsIntGr[whichOne].y-1});
+        }
+
+
+        console.log(tabSelectedStoneCoord);
+
+        // on joue sur une de ces coordonées au hasard en tirant un numéro aléatoire entre 0 et le nombre total de liberté
+        var tabSelectedStoneLibCoord = Math.floor(Math.random()* tabSelectedStoneCoord.length);
+        console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord]);
+
+console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].x);
+console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].y);
+
+        return [tabSelectedStoneCoord[tabSelectedStoneLibCoord].x, tabSelectedStoneCoord[tabSelectedStoneLibCoord].y]
+
+    }
+ 
+    var newStone = play();
+    var rand1 = newStone[0];
+    var rand2 = newStone[1];
+
+    var random = rand1+"_"+rand2;
+  
+
+    
+
+    //var random = parseInt(Math.floor(Math.random() * (Rows-1))) +'_'+ parseInt(Math.floor(Math.random() * (Rows-1)));
     //var rand1 = Math.ceil(Math.random() * 2);
     //var rand2 = Math.ceil(Math.random() * 2);
 
