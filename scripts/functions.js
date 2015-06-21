@@ -233,10 +233,7 @@ function actualisationGroups () {
                 territories[num_Group] = 3;
             }
         }
-    }
-
-    console.log("numgroup"+num_Group);
-    
+    }    
 }
 
 
@@ -259,56 +256,141 @@ function supGroup (x, y) { // Deleting the groups
 
 function iamode () {
 
-    //actualisationGroups();
+    actualisationGroups();
 
-    var random = parseInt(Math.floor(Math.random() * (Rows-1))) +'_'+ parseInt(Math.floor(Math.random() * (Rows-1)));
     
-    console.log('"'+ random +'"');
-    console.log("IA joue");
+    function arrayEnemies () {
+            // on crée un tableau qui stocke les num_group adverses
+        var num_GRPADVS = [0];
+        var lib_GRPADVS = [0];
 
-
-
-    // on crée un tableau qui stocke les num_group adverses
-    var num_GRPADVS = [0];
-
-    var presence = false;
-
-    console.log("debut verif");
-
-    // on cherche sur le Goban tous les pions adverses 
-    for (var i = 0; i < Rows; i++) {
-        for (var j = 0; j < Rows; j++) {
-            if (game[i][j] == 1 && group[i][j] != undefined) {
-                console.log("trouvé");
-
-                // on cherche dans le tableau créé si le groupe du pion analysé est déjà stocké
-                for (var k = 0; k <= num_GRPADVS.length; k++) {
-
-
-                    if (num_GRPADVS[k] == group[i][j]) {
-                        console.log("test2");
-                        presence = true;
-                    } else if (num_GRPADVS[k] != group[i][j]) {
-                        console.log("test3");
-                        presence = false;
+        // on cherche sur le Goban tous les pions adverses 
+        for (var i = 0; i < Rows; i++) {
+            for (var j = 0; j < Rows; j++) {
+                if (game[i][j] == 1 && group[i][j] != undefined) {
+                    // on cherche dans le tableau créé si le groupe du pion analysé est déjà stocké
+                    var presence = false;
+                    for (var k = 0; k <= num_GRPADVS.length; k++) {
+                        if (num_GRPADVS[k] == group[i][j]) {
+                            presence = true;
+                        }
                     }
-
-                }
-
-                // s'il n'est pas stocké, on le stock haha
-
-                if (presence === false){
-                    console.log("test4");
-                    console.log("alo"+group[i][j]);
-                    num_GRPADVS.push(group[i][j]);
+                    // s'il n'est pas stocké, on le stock haha
+                    if (presence === false) {
+                        num_GRPADVS.push(group[i][j]);
+                        lib_GRPADVS.push(numLibGroup[group[i][j]]);
+                    }
                 }
             }
         }
+
+        return [num_GRPADVS, lib_GRPADVS];
+
     }
 
-    console.log("tab: "+num_GRPADVS);
 
-    console.log("fin verif");
+    function enemiesLiberties () {
+        var enemies = arrayEnemies();
+        var enemyGroups = enemies[0];
+        var enemyLibGroups = enemies[1];
+        // il s'agit ici de compter les libertés de chaque groupe enemi et déterminer quel groupe a le moins de liberté
+        var interest = 1000;
+        var intgr;
+
+        for (var i = 0; i < enemyGroups.length; i++) {
+            if (i === 0) continue;
+
+            if (enemyLibGroups[i] < interest) {
+                interest = enemyLibGroups[i];
+                intgr = enemyGroups[i];
+            }       
+        }
+
+        //console.log("le groupe qui a le moins de liberté est: "+ intgr);
+
+        return intgr;
+    }
+    
+    /*
+    * on récupère avec cette fonction les coordonées de chaque pion qui constitue le groupe adverse retourné par enemiesLiberties()
+    * et on compte les pions de ce groupe  
+    */
+    function coordintgr () {
+
+        var whichEnemy = enemiesLiberties();
+        var nombrePions = 0;
+        var coordIntgrPions = [];
+
+        for (var i = 0; i < Rows; i++) {
+            for (var j = 0; j < Rows; j++) {
+                if (group[i][j] == whichEnemy){
+                    coordIntgrPions.push({x: i, y: j});
+                    nombrePions++;
+                }
+            }
+        }
+
+        return [nombrePions, coordIntgrPions];
+
+    }
+
+
+    /*
+    * Cette fonction analyse le groupe pour determiner les pions qui constituent ses bords
+    */
+    function extremiteIntGr () {
+        var coord = coordintgr();
+        var nmbPions = coord[0];
+        var tabCoordPions = coord[1];
+
+        var extPionsIntGr = [];
+
+        for (var i = 0; i < tabCoordPions.length; i++) {
+
+            console.log(game[(tabCoordPions[i].x)][tabCoordPions[i].y]);
+
+            if (
+                ( (tabCoordPions[i].x == 0 || game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 ) && 
+                    (game[(tabCoordPions[i].x)+1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] == 0 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] == 0)
+                    ) ||
+                ( (tabCoordPions[i].x == Rows-1 || game[(tabCoordPions[i].x)+1][tabCoordPions[i].y] == 0 ) &&
+                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] == 0 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] == 0)
+                    ) ||
+                ( (tabCoordPions[i].y == 0 || game[(tabCoordPions[i].x)][tabCoordPions[i].y-1] == 0 ) &&
+                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x+1][(tabCoordPions[i].y)] == 0 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] == 0)
+                    ) ||
+                ( (tabCoordPions[i].y == Rows-1 || game[(tabCoordPions[i].x)][tabCoordPions[i].y+1] == 0 ) &&
+                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x+1][(tabCoordPions[i].y)] == 0 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] == 0)
+                    )
+                
+                ) {
+                //console.log(tabCoordPions[i]);
+
+                extPionsIntGr.push(tabCoordPions[i]);
+
+                //console.log(extPionsIntGr);
+            }
+        }
+
+        return extPionsIntGr;
+    }
+    
+
+    var tabExtPionsIntGr = extremiteIntGr();
+    console.log(tabExtPionsIntGr);
+
+    var random = parseInt(Math.floor(Math.random() * (Rows-1))) +'_'+ parseInt(Math.floor(Math.random() * (Rows-1)));
+    //var rand1 = Math.ceil(Math.random() * 2);
+    //var rand2 = Math.ceil(Math.random() * 2);
+
+    //var random = (tabCoordPions[0].i + rand1) +"_"+ (tabCoordPions[0].j + rand2);
+    
+    console.log('ia joue ici"'+ random +'"');
+    //console.log("IA joue");
 
     toggle(random);
 
@@ -316,7 +398,8 @@ function iamode () {
     player = waitingPlayer;
     waitingPlayer = tempPlayer;
 
-    console.log("player2="+ player);
+    //console.log("player2="+ player);
+// fin dela fonction iamode
 }
 
 
@@ -332,7 +415,7 @@ function playerTurn () {
             player = waitingPlayer;
             waitingPlayer = tempPlayer;
 
-            console.log("player1=" + player);
+            //console.log("player1=" + player);
 
             setTimeout('iamode()', 300);
         }
