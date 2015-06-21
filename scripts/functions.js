@@ -24,7 +24,10 @@ function handicapSetUp () {
  * @param string cellid
  */
 function toggle (cellid) {
-    console.log("case: "+ cellid);
+    if (player == 1){
+        console.log("je joue ici "+ cellid);
+    }
+    
 
     var indexTiret = cellid.split("_");
     var x = parseInt(indexTiret[0]);
@@ -306,9 +309,11 @@ function iamode () {
             }       
         }
 
-        //console.log("le groupe qui a le moins de liberté est: "+ intgr);
+        console.log("le groupe qui a le moins de liberté est: "+ intgr);
 
         return intgr;
+
+
     }
     
     /*
@@ -330,6 +335,9 @@ function iamode () {
             }
         }
 
+        console.log('coordonées des pions de intgr');
+        console.log(coordIntgrPions);
+
         return [nombrePions, coordIntgrPions];
 
     }
@@ -345,34 +353,35 @@ function iamode () {
 
         var extPionsIntGr = [];
 
-        for (var i = 0; i < tabCoordPions.length; i++) {
+        for (var i = 0; i < tabCoordPions.length ; i++) {
+            console.log(tabCoordPions.length);
 
-            console.log(game[(tabCoordPions[i].x)][tabCoordPions[i].y]);
+            //console.log(game[(tabCoordPions[i].x)][tabCoordPions[i].y]);
 
             if (
                 ( (tabCoordPions[i].x == 0 || game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 ) && 
-                    (game[(tabCoordPions[i].x)+1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] == 0 ||
-                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] == 0)
+                    (game[(tabCoordPions[i].x)+1][tabCoordPions[i].y] != 1 || game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] != 1 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] != 1)
                     ) ||
                 ( (tabCoordPions[i].x == Rows-1 || game[(tabCoordPions[i].x)+1][tabCoordPions[i].y] == 0 ) &&
-                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] == 0 ||
-                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] == 0)
+                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] != 1 || game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] != 1 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] != 1)
                     ) ||
                 ( (tabCoordPions[i].y == 0 || game[(tabCoordPions[i].x)][tabCoordPions[i].y-1] == 0 ) &&
-                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x+1][(tabCoordPions[i].y)] == 0 ||
-                    game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] == 0)
+                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] != 1 || game[tabCoordPions[i].x+1][(tabCoordPions[i].y)] != 1 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)+1] != 1)
                     ) ||
                 ( (tabCoordPions[i].y == Rows-1 || game[(tabCoordPions[i].x)][tabCoordPions[i].y+1] == 0 ) &&
-                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] == 0 || game[tabCoordPions[i].x+1][(tabCoordPions[i].y)] == 0 ||
-                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] == 0)
+                    (game[(tabCoordPions[i].x)-1][tabCoordPions[i].y] != 1 || game[tabCoordPions[i].x+1][(tabCoordPions[i].y)] != 1 ||
+                    game[tabCoordPions[i].x][(tabCoordPions[i].y)-1] != 1)
                     )
                 
                 ) {
-                //console.log(tabCoordPions[i]);
+                console.log(tabCoordPions[i]);
 
                 extPionsIntGr.push(tabCoordPions[i]);
 
-                //console.log(extPionsIntGr);
+                console.log(extPionsIntGr);
             }
         }
 
@@ -381,6 +390,7 @@ function iamode () {
     
     function play () {
         var tabExtPionsIntGr = extremiteIntGr();
+        console.log('regarde ici');
         console.log(tabExtPionsIntGr);
 
         // on prend un chiffre au hasard entre 0 et le nombre total de pierre d'extrémité
@@ -389,26 +399,31 @@ function iamode () {
         // on récupère les coordonnées du pion corresondant au numéro tiré
         var selectedStoneCoord = tabExtPionsIntGr[whichOne];
 
+        console.log("which one"+ whichOne);
+        console.log(tabExtPionsIntGr.length);
+
         console.log("lol:");
         console.log(tabExtPionsIntGr[whichOne]);
 
         var tabSelectedStoneCoord = [];
 
+        //console.log("alors:"+tabExtPionsIntGr[whichOne].x);
+
         // on determine quelles sont les coordonnées des libertés de ce pion et on stock les coordonnées du dans un tableau
         if (tabExtPionsIntGr[whichOne].x != Rows-1 && game[tabExtPionsIntGr[whichOne].x +1][tabExtPionsIntGr[whichOne].y] == 0) {
-            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x+1, y: tabExtPionsIntGr[whichOne].y});
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x +1, y: tabExtPionsIntGr[whichOne].y});
         }
 
         if (tabExtPionsIntGr[whichOne].x != 0 && game[tabExtPionsIntGr[whichOne].x -1][tabExtPionsIntGr[whichOne].y] == 0) {
-            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x-1, y: tabExtPionsIntGr[whichOne].y});
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x -1, y: tabExtPionsIntGr[whichOne].y});
         }
 
         if (tabExtPionsIntGr[whichOne].y != Rows-1 && game[tabExtPionsIntGr[whichOne].x][tabExtPionsIntGr[whichOne].y+1] == 0) {
-            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x, y: tabExtPionsIntGr[whichOne].y+1});
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x, y: tabExtPionsIntGr[whichOne].y +1});
         }
 
         if (tabExtPionsIntGr[whichOne].y != 0 && game[tabExtPionsIntGr[whichOne].x][tabExtPionsIntGr[whichOne].y-1] == 0) {
-            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x, y: tabExtPionsIntGr[whichOne].y-1});
+            tabSelectedStoneCoord.push({x: tabExtPionsIntGr[whichOne].x, y: tabExtPionsIntGr[whichOne].y -1});
         }
 
 
@@ -418,10 +433,10 @@ function iamode () {
         var tabSelectedStoneLibCoord = Math.floor(Math.random()* tabSelectedStoneCoord.length);
         console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord]);
 
-console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].x);
-console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].y);
+        //console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].x);
+        //console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].y);
 
-        return [tabSelectedStoneCoord[tabSelectedStoneLibCoord].x, tabSelectedStoneCoord[tabSelectedStoneLibCoord].y]
+        return [tabSelectedStoneCoord[tabSelectedStoneLibCoord].x, tabSelectedStoneCoord[tabSelectedStoneLibCoord].y];
 
     }
  
@@ -430,9 +445,6 @@ console.log(tabSelectedStoneCoord[tabSelectedStoneLibCoord].y);
     var rand2 = newStone[1];
 
     var random = rand1+"_"+rand2;
-  
-
-    
 
     //var random = parseInt(Math.floor(Math.random() * (Rows-1))) +'_'+ parseInt(Math.floor(Math.random() * (Rows-1)));
     //var rand1 = Math.ceil(Math.random() * 2);
