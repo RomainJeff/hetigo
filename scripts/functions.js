@@ -379,13 +379,9 @@ function iamode () {
         return extPionsIntGr;
     }
     
-    
 
-     var extextremiteIntGr();   
-    
-
-    // var tabExtPionsIntGr = extremiteIntGr();
-    // console.log(tabExtPionsIntGr);
+    var tabExtPionsIntGr = extremiteIntGr();
+    console.log(tabExtPionsIntGr);
 
     var random = parseInt(Math.floor(Math.random() * (Rows-1))) +'_'+ parseInt(Math.floor(Math.random() * (Rows-1)));
     //var rand1 = Math.ceil(Math.random() * 2);
