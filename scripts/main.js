@@ -42,4 +42,6 @@ if (handicap!=0) {
     handicapSetUp();
 }
 
+
 graphisme();
+

@@ -1,26 +1,11 @@
-body {
-    background-image: url('../img/Background.jpg');
-    background-size: cover;
-    overflow: hidden;
-    padding: 0;
-    margin: 0;
-}
-
-#container {
-    position: relative;
-    margin: auto;
-    padding-top: 5vh;
-    width: 1200px;
-}
-
 #goban {
     position:absolute;
     z-index:100;
     display: inline-block;
     width:950px;
     height:950px;
-    margin-left: 130px;
-    left:0;
+    margin-left: 195px;
+    left: 0;
 }
 
 
@@ -40,23 +25,11 @@ body {
 /* ----------------- BACKGROUND ---------------- */
 
 #background{
-    background: url('../img/test.jpg')repeat 50%;    
     position:absolute;
-    left: 150px;
-   
+    margin-left:210px;
+    border:1px solid yellow;
     width: 900px;
     margin-top: 25px;
-    
-}
-
-#deco {
-    background-image: url('../img/border.png');
-    background-size: cover;
-    position:absolute;
-    left: 135px;
-    width: 930px;
-    height: 930px;
-    margin-top:10px;
     
 }
 
@@ -76,11 +49,11 @@ body {
 }
 
 .black {
-    background-color: #b4a8a8;
+    background-color:black;
 }
 
 .white {
-    background-color:red;
+    background-color:#b4a8a8;
 }
 
 .territory_black {
@@ -103,43 +76,12 @@ body {
     font-size:27px;
 }
 
-#currentPlayer{
-    position: absolute;
-    top : 30px;
-    margin-left: 44vw;
-    color: white;
-    font-family: "ADAM.CG PRO";
-}
-
 #blackPlayer{
-    position: absolute;
-    margin-top: 85vh;
-    margin-left: 6vw;
-    color: white;
-    font-family: "ADAM.CG PRO";
-}
-
-#blackPlayer img {
-    position: absolute;
-    margin-left: -6vw;
-    top: -200px;
-    width: 200px;
+    border: 1px solid black;
 }
 
 #whitePlayer{
-    position: absolute;
-    margin-top: 85vh;
-    margin-left: 83vw;
-    color: white;
-    font-family: "ADAM.CG PRO";
-}
-
-#whitePlayer img {
-    position: absolute;
-    margin-left: 9.3vw;
-    float: right;
-    width: 200px;
-    top: -200px;
+    border: 1px solid black;
 }
 
 #passer {
@@ -175,32 +117,4 @@ body {
     display: block;
     margin-top: 460px;
     position: absolute;
-}
-
-#talice {
-    background-color: black;
-    padding-left: 20%;
-    padding-right: 20%;
-    position:absolute;
-    left:0;
-    top: 45vh;
-    right:0;
-    margin-left:auto;
-    margin-right:auto;
-    opacity: 0;
-    z-index:0;
-}
-
-#tplague{
-    background-color: black;
-    padding-left: 20%;
-    padding-right: 20%;
-    position:absolute;
-    left:0;
-    top: 45vh;
-    right:0;
-    margin-left:auto;
-    margin-right:auto;
-    opacity: 0;
-    z-index: 0;
 }
