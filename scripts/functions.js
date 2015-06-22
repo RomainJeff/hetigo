@@ -133,86 +133,142 @@ function actualisationGroups () {
     
     var num_Group = 1;
     
-    for (var i = 0; i < Rows; i++) {
-        for (var j = 0; j < Rows; j++) {
-            group[i][j] = undefined;
+    for (i=0; i<Rows; i++) {
+        for (j=0; j<Rows; j++) {
+            group[i][j]=undefined;
         }
     }
     
-    for(var i = 0; i < numLibGroup.length; i++) {
+    for(var i =0; i< numLibGroup.length; i++) {
         numLibGroup[i] = 0;
     }
     
-    for (var i = 0; i < Rows; i++) {
-        for (var j = 0; j < Rows; j++) {
-            if (game[i][j] == 0) {
-                group[i][j] = 0;
-            } else if (group[i][j] === undefined) {
-                groupRecursive(i, j);
-                num_Group++;
+    for (i=0; i<Rows; i++) {
+        for (j=0; j<Rows; j++) {
+            if (countPointsFunction == true ) { // When counting the points, creates groups of empty cells for territories
+                if ( game[i][j]!=0) {
+                    group[i][j]=0;
+                } else if (group[i][j]===undefined) {
+                    groupRecursive(i,j);
+                    num_Group++;
+                }
+            } else { // Else, during the game, creates groups of cells of each player
+                if ( game[i][j]==0) {
+                    group[i][j]=0;
+                } else if (group[i][j]===undefined) {
+                    groupRecursive(i,j);
+                    num_Group++;
+                }
             }
         }
     }
     
-    function groupRecursive (x, y) {
-        group[x][y] = num_Group;
-        numLibGroup[num_Group] += libertiesCell(x,y);
+    function groupRecursive (x,y) {
+        group[x][y]=num_Group;
         
-        if ( (y-1) >= 0 && game[x][y] == game[x][y-1] && group[x][y-1] === undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        if (countPointsFunction == false ) { // Count the liberties only when creating cells groups
+            numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        } else {
+            territoriesNeighboors(x,y);
+        }
+        
+        if ( (y-1)>=0 && game[x][y] == game[x][y-1] && group[x][y-1]===undefined) {
             groupRecursive(x, (y-1));
         }
-        if ( (x+1) < Rows && game[x][y] == game[x+1][y] && group[x+1][y] === undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        if ( (x+1)<Rows && game[x][y] == game[x+1][y] && group[x+1][y]===undefined) {
             groupRecursive((x+1), y);
         }
-        if ( (y+1) < Rows && game[x][y] == game[x][y+1] && group[x][y+1] === undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        if ( (y+1)<Rows && game[x][y] == game[x][y+1] && group[x][y+1]===undefined) {
             groupRecursive(x, (y+1));
         }
-        if ( (x-1) >= 0 && game[x][y] == game[x-1][y] && group[x-1][y] === undefined) {
-           // numLibGroup[num_Group] = numLibGroup[num_Group] + libertiesCell(x,y);
+        if ( (x-1)>=0 && game[x][y] == game[x-1][y] && group[x-1][y]===undefined) {
             groupRecursive((x-1), y);
         }
-        
         return;
     }
     
-    
-    function libertiesCell(x, y) {
+    function libertiesCell(x,y) {
         var nbLiberties = 0;
-
-        if ((y-1) >= 0 && game[x][y-1] == 0) {
-            nbLiberties++;
+        if ((y-1)>=0 && game[x][y-1]==0) {
+            nbLiberties ++;
         }
-        if ((x+1) < Rows && game[x+1][y] == 0) {
-            nbLiberties++;
+        if ((x+1)<Rows && game[x+1][y]==0) {
+            nbLiberties ++;
         }
-        if ((y+1) < Rows && game[x][y+1] == 0) {
-            nbLiberties++;
+        if ((y+1)<Rows && game[x][y+1]==0) {
+            nbLiberties ++;
         }
-        if ((x-1) >= 0 && game[x-1][y] == 0) {
-            nbLiberties++;
+        if ((x-1)>=0 && game[x-1][y]==0) {
+            nbLiberties ++;
         }
-        
         return nbLiberties;
     }
     
-}
-
-
-function libertiesGroup (x, y) {// Seeking the liberties of a group
-    actualisationGroups();
-    var groupNum = group[x][y];
-
-    if (numLibGroup[groupNum] != 0 && numLibGroup != undefined) {
-        return true; // This group has at least one liberty
+    function territoriesNeighboors(x,y) {
+        if ((y-1)>=0 && game[x][y-1]!=0) {
+            if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x][y-1];
+            } else if (territories[num_Group]!=game[x][y-1]) {
+                territories[num_Group]=3;
+            }
+        }
+        if ((x+1)<Rows && game[x+1][y]!=0) {
+            if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x+1][y];
+            } else if (territories[num_Group]!=game[x+1][y]) {
+                territories[num_Group]=3;
+            }
+        }
+        if ((y+1)<Rows && game[x][y+1]!=0) {
+            if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x][y+1];
+            } else if (territories[num_Group]!=game[x][y+1]) {
+                territories[num_Group]=3;
+            }
+        }
+        if ((x-1)>=0 && game[x-1][y]!=0) {
+           if (territories[num_Group]===undefined) {
+                territories[num_Group]=game[x-1][y];
+            } else if (territories[num_Group]!=game[x-1][y]) {
+                territories[num_Group]=3;
+            }
+        }
     }
     
-    return false; // The group has not liberties left
+    if (countPointsFunction==false) {
+        for (var i=0; i<numLibGroup.length; i++) {
+            numLibGroup[i]=fixLiberties(i);
+        }
+        
+    }
+    
+    function fixLiberties (groupNb) {
+        
+        for (var i =0; i< Rows; i++) {
+            for (var j=0; j<Rows; j++) {
+                if (group[i][j]==groupNb) {
+                    if ( (j-1) >= 0 && (i-1) >= 0 && group[i - 1][j]==groupNb && group[i - 1][j - 1]==groupNb && game[i][j-1]==0) { numLibGroup[groupNb]--; };
+                    if ( (i-1) >= 0 && (j+1) < Rows && group[i - 1][j]==groupNb && group[i - 1][j + 1]==groupNb && game[i][j+1]==0) { numLibGroup[groupNb]--; };
+                    if ( (j-1) >= 0 && (i+1) < Rows && group[i + 1][j]==groupNb && group[i + 1][j - 1]==groupNb && game[i][j-1]==0) { numLibGroup[groupNb]--; };
+                    if ( (j+1) < Rows && (i+1) < Rows && group[i + 1][j]==groupNb && group[i + 1][j + 1]==groupNb && game[i][j+1]==0) { numLibGroup[groupNb]--; };
+                }
+            }
+        }
+        
+        for (var i =0; i< Rows; i++) {
+            for (var j=0; j<Rows; j++) {
+                if (game[i][j]==0) {
+                    if ( ((i-1)>=0 && group[i-1][j]==groupNb) && ((j+1)<Rows && group[i][j+1]==groupNb) && ((i+1)<Rows && group[i+1][j]==groupNb) && ((j-1)>=0 && group[i][j-1]==groupNb) ){
+                        numLibGroup[groupNb]++;
+                    }
+                }
+            }
+        }
+        
+        return numLibGroup[groupNb];
+    }
+    
 }
-
-
 
 
 function supGroup (x, y) { // Deleting the groups
@@ -234,25 +290,48 @@ function supGroup (x, y) { // Deleting the groups
 
 
 function playerTurn () {
+
     var tempPlayer = player;
 
-    if (playerMode == 1) {
+    if (playerMode == 1){
+ 
+    if (player==2){
+
+        $("#talice").css("zIndex", 9999999999).addClass("animated fadeIn").delay(1000).queue(function(){
+        $(this).addClass("animated fadeOut").dequeue();
+      $(this).removeClass("animated fadeIn");
+      $(this).removeClass("animated fadeOut");
+      $(this).css("zIndex", 0);
+});
+
+    }
+    else if(player==1) {
+            $("#tplague").css("zIndex", 9999999999).addClass("animated fadeIn").delay(1000).queue(function(){
+    $(this).addClass("animated fadeOut").dequeue();
+    $(this).removeClass("animated fadeIn");
+    $(this).removeClass("animated fadeOut");
+    $(this).css("zIndex", 0);
+});
+    }
+    player = waitingPlayer;
+    waitingPlayer = tempPlayer;
+}
+else if (playerMode == 3){
+    if (player == 1){
+       
+
+       
+        tempPlayer = player;
         player = waitingPlayer;
         waitingPlayer = tempPlayer;
-    } else if (playerMode == 3) {
-        if (player == 1) {
-            tempPlayer = player;
-            player = waitingPlayer;
-            waitingPlayer = tempPlayer;
-
-            console.log("player1=" + player);
-
-            setTimeout('iamode()', 300);
-        }
+        console.log("player1=" + player);
+        setTimeout('iamode()',300);
+        
     }
-
-    skippedTurn = 0;
-    document.getElementById("currentPlayer").innerHTML = "Current Player: "+ player;
+    
+    skippedTurn=0;
+    document.getElementById("currentPlayer").innerHTML="Current Player: "+ player;
+}
 }
 
 
@@ -306,30 +385,54 @@ function EndGame() {
     document.innerHTML="<div onclick='reset'> Retour au menu </div>";
     */
     // Empecher de jouer 
-    // Compter les points
 }
 
 
 function countPoints () {
     pointsPlayers[1] = 0;
-    pointsPlayers[2] = 5.5; // Black player has an advantage as the first player to play, so the white player has 5.5 points already
-    
+    pointsPlayers[2] = 5.5; // Black player has an advantage as the first player to play, so the white play has 5.5 points already
     if (handicap != 0) {
         pointsPlayers[2] = parseInt(handicap);
     }
-    // Count the number of points of each player
-    for (var i = 0; i < Rows; i++) {
-        for (var j = 0; j < Rows; j++) {
-            if (game[i][j] == 1) {
+    // Count the number of pawn of each player
+    for (var i = 0; i<Rows; i++) {
+        for (var j = 0; j<Rows; j++) {
+            if (game[i][j]==1) {
                 pointsPlayers[1]++;
-            } else if (game[i][j] == 2) {
+            } else if (game[i][j]==2) {
                 pointsPlayers[2]++;
             }
         }
     }
     
     // Count the territories of each player
-    
+    countPointsFunction = true;
+    actualisationGroups();
+    countPointsFunction = false;
+    for (var i=0; i<territories.length; i++) {
+        if (territories[i]==1) {
+            for (var k=0; k<Rows; k++) {
+                for (var l=0; l<Rows; l++) {
+                    if (group[k][l]==i) {
+                        pointsPlayers[1]++;
+                        var element = document.getElementById(k+"_"+l);
+                        element.setAttribute("class", "territory_black");
+                    }
+                }
+            }
+        }
+        if (territories[i]==2) {
+            for (var k=0; k<Rows; k++) {
+                for (var l=0; l<Rows; l++) {
+                    if (group[k][l]==i) {
+                        pointsPlayers[2]++;
+                        var element = document.getElementById(k+"_"+l);
+                        element.setAttribute("class", "territory_white");
+                    }
+                }
+            }
+        }
+    }
 }
 
 
