@@ -1,0 +1,96 @@
+body {
+	background-image : url('../img/bg_regle.jpg');
+	background-size: cover;
+	background-position: fixed;
+	margin: 0;
+	padding: 0;
+}
+
+#container {
+	width: 1200px;
+	margin: auto;
+	display: block;
+	margin-top: 100px;
+	bottom: 500px;
+}
+
+h1 {
+	font-family: "Steampuff";
+	color: white;
+	letter-spacing: 0.4em;
+}
+
+.separator {
+	width: 50px;
+	height: 5px;
+	background-color: white;
+}
+
+h2 {
+	font-family: "Steampuff";
+	display: block;
+	margin-top: 80px;
+	color: #d7d7d7;
+	letter-spacing: 0.4em;
+	font-size: 35px;
+}
+
+img {
+	margin-top: 60px;
+	float: left;
+}
+
+p {
+	position: absolute;
+	margin-left: 550px;
+	width: 800px;
+	color: white;
+	font-size: 18px;
+	font-family: "ADAM.CG PRO";
+	margin-top: 80px;
+	line-height: 1.5em;
+	letter-spacing: 0.2em;
+}
+
+.second {
+	margin-top: 230px;
+}
+
+.regleDeux {
+	margin-top: 80vh;
+}
+
+.regleTrois {
+	margin-top: 80vh;
+}
+
+button {
+    text-align: center;
+    margin: auto;
+    width: 250px;
+    padding-top:10px; 
+    padding-bottom: 10px;
+    padding-left: 30px;
+    padding-right :30px;
+    background-image:linear-gradient(#220b00, #723404, #220b00);
+    border-bottom:8px solid #CCC;
+    border-top:8px solid #CCC;
+    border-left:8px solid #CCC;
+    border-right:8px solid #CCC;
+    -webkit-border-image: -webkit-linear-gradient(#a2883a, #fdc03b, #a2883a) 10 10 stretch stretch;
+    -o-border-image: -o-linear-gradient(#a2883a, #fdc03b, #a2883a) 10 10 stretch stretch;
+    border-image: linear-gradient(#a2883a, #fdc03b, #a2883a) 10 10 stretch stretch;
+    -webkit-border-radius: 5px;
+    border-image-radius: 5em;
+    font-family: "Steampuff";
+    font-size: 20px;
+    color: white;
+    letter-spacing: 0.2em;
+}
+
+
+.BouttonTrois {
+    margin-top: 680px;
+    margin-bottom: 200px;
+}
+

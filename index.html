@@ -7,28 +7,36 @@
 	
 </head>
 <body>
-	
+<div id="video" style="position: fixed; margin-top: -185px; margin-left: -40px; z-index: -99; width: 110%; height: 110%">
+  <iframe frameborder="0" height="100%" width="100%" 
+    src="https://www.youtube.com/embed/vI-CaTB0aHc?rel=0&amp;autoplay=1&amp;controls=0&amp;showinfo=0">
+  </iframe>
+</div>
+
+	<div id="container">
     <form action="game.html" method="GET" onSubmit="return checkForm()" id="parameters">
         <div id="perso">
-            <input type="radio" name="perso" value="1" id="alice"> <label for="alice"> Alice </label>
+            <input type="radio" name="perso" value="1" id="alice">
+             <label for="alice"> Alice </label><br />
             <input type="radio" name="perso" value="2" id="dr"> <label for="dr"> Docteur </label>
         </div>
         
         <div id="mode">
-            <input type="radio" name="playerMode" value="1" id="2vs2"> <label for="2vs2"> 1 vs 1 </label>
+            <input type="radio" name="playerMode" value="1" id="2vs2"> <label for="2vs2"> 1 vs 1 </label><br />
             <input type="radio" name="playerMode" value="3" id="ia" > <label for="ia"> IA </label>
         </div>
         
         <div id="handicap">
-            <input class="handicap" type="radio" name="handicap" value="0" id="0"> <label for="0"> Pas de handicap </label>
-            <input class="handicap" type="radio" name="handicap" value="5" id="5"> <label for="5"> Handicap à 5 </label>
+            <input class="handicap" type="radio" name="handicap" value="0" id="0"> <label for="0"> Pas de handicap </label><br />
+            <input class="handicap" type="radio" name="handicap" value="5" id="5"> <label for="5"> Handicap à 5 </label><br />
             <input class="handicap" type="radio" name="handicap" value="9" id="9"> <label for="9"> Handicap à 9 </label>
         </div>
         <input type="submit" value="PLAY">
+
     </form>
-    
+    <a href="regles.html"><button class="BouttonTrois"> RÈGLES </button></a>
     <div id="caseErreurs"></div>
-    
+    </div>
     <script type="text/javascript" src="scripts/initGame.js"></script>
 	
 </body>
