@@ -261,6 +261,7 @@ function actualisationGroups () {
             }
         }
         
+        // Correct a bug when a liberty is surrounded by 4 pawn of a group
         for (var i =0; i< Rows; i++) {
             for (var j=0; j<Rows; j++) {
                 if (game[i][j]==0) {

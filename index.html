@@ -8,9 +8,6 @@
 </head>
 <body>
 	
-	<!--
-    <div id="play" onclick="play()"> PLAY </div>
-    -->
     <form action="game.html" method="GET" onSubmit="return checkForm()" id="parameters">
         <div id="perso">
             <input type="radio" name="perso" value="1" id="alice"> <label for="alice"> Alice </label>
@@ -18,8 +15,7 @@
         </div>
         
         <div id="mode">
-            <input type="radio" name="playerMode" value="1" id="2vs2"> <label for="2vs2"> 2 vs 2 </label>
-            <input type="radio" name="playerMode" value="2" id="reseau"> <label for="reseau"> Jeu en réseau </label>
+            <input type="radio" name="playerMode" value="1" id="2vs2"> <label for="2vs2"> 1 vs 1 </label>
             <input type="radio" name="playerMode" value="3" id="ia" > <label for="ia"> IA </label>
         </div>
         
@@ -33,9 +29,6 @@
     
     <div id="caseErreurs"></div>
     
-    <!--
-    <a href="game.html"> PLAY </a>
-    -->
     <script type="text/javascript" src="scripts/initGame.js"></script>
 	
 </body>
