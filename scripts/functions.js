@@ -383,7 +383,14 @@ function graphisme () {
 
 function EndGame () {
     countPoints();
-    window.alert("Fin de la partie ! Joueur noir à" + pointsPlayers[1] + "points et blanc" + pointsPlayers[2] + "points");
+    if (pointsPlayers[1]>pointsPlayers[2]) {
+       document.getElementById("currentPlayer").innerHTML = "Alice gagne ! Le joueur 1 à " + pointsPlayers[1] + " points et le joueur 2 en a " + pointsPlayers[2];
+    } else if (pointsPlayers[1]<pointsPlayers[2]) {
+        document.getElementById("currentPlayer").innerHTML = "Docteur Plague gagne ! Le joueur 1 à " + pointsPlayers[1] + " points et le joueur 2 en a " + pointsPlayers[2];
+    } else {
+        document.getElementById("currentPlayer").innerHTML = "Egalité ! Les deux joueurs ont " + pointsPlayers[1] + " points";
+    }
+   
     
 }
 
