@@ -18,7 +18,6 @@ function handicapSetUp () {
     playerTurn();
 }
 
-
 /**
  * Place une pierre du joueur courant sur la grille
  * @param string cellid
@@ -35,6 +34,14 @@ function toggle (cellid) {
     
     if (game[x][y] != 0 || suicide(x,y) == true || ko(x,y) == true) {
         console.log("Impossible de jouer ici");
+        if (game[x][y]!=0 && playerMode!=3){
+            document.querySelector('.pions').classList.remove('invisible');
+            document.querySelector('.pions').classList.add('visible');
+            setTimeout(function(){
+                document.querySelector('.pions').classList.add('invisible');
+                document.querySelector('.pions').classList.remove('visible');
+            }, 2000);
+        }
         // return;
     } else {
         game[x][y] = player;
@@ -89,6 +96,14 @@ function suicide (x, y) {
         } else {
             game[x][y] = 0;
             console.log("suicide");
+            if (playerMode != 3){
+                document.querySelector('.suicide').classList.remove('invisible');
+                document.querySelector('.suicide').classList.add('visible');
+                setTimeout(function(){
+                    document.querySelector('.suicide').classList.add('invisible');
+                    document.querySelector('.suicide').classList.remove('visible');
+                }, 2000);
+            }
             return true;
         }
     }
@@ -106,6 +121,14 @@ function ko (x, y) {
     if (turn > 2 && saveTurn[(turn-2) % 10] == saveTurn[turn % 10]) {
         saveTurn[turn % 10] = 0;
         console.log("ko");
+        if (playerMode != 3){
+            document.querySelector('.ko').classList.remove('invisible');
+            document.querySelector('.ko').classList.add('visible');
+            setTimeout(function(){
+                document.querySelector('.ko').classList.add('invisible');
+                document.querySelector('.ko').classList.remove('visible');
+            }, 2000);
+        }
         return true;
     } else {
         saveTurn[turn % 10] = 0;
@@ -346,12 +369,16 @@ else if (playerMode == 3){
 function skipTurn (){
     skippedTurn++;
     turn++;
+    console.log("passer");
 
     var tempPlayer = player;
     player = waitingPlayer;
     waitingPlayer = tempPlayer;
 
-    document.getElementById("currentPlayer").innerHTML = "Current Player: "+ player;
+    if (player == 1)
+        document.getElementById("currentPlayer").innerHTML = "<img class='alice' src='img/Talice.png'>";
+    else
+        document.getElementById("currentPlayer").innerHTML = "<img class='plague' src='img/Tplague.png'>";
 
     if (skippedTurn == 2) {
         EndGame();
@@ -360,9 +387,13 @@ function skipTurn (){
 
 
 function graphisme () {
-    document.getElementById("currentPlayer").innerHTML = "Current Player: "+ player;
-    document.getElementById("whitePrisoner").innerHTML = "Prisoners: "+ prisoner[2];
-    document.getElementById("blackPrisoner").innerHTML = "Prisoners: "+ prisoner[1];
+    if (player == 1)
+        document.getElementById("currentPlayer").innerHTML = "<img class='alice' src='img/Talice.png'>";
+    else
+        document.getElementById("currentPlayer").innerHTML = "<img class='plague' src='img/Tplague.png'>";
+    document.getElementById("whitePrisoner").innerHTML = prisoner[2];
+    document.getElementById("blackPrisoner").innerHTML = prisoner[1];
+
 
     for (var i = 0; i < Rows; i++) {
         for (var j = 0; j < Rows; j++) {
@@ -384,11 +415,11 @@ function graphisme () {
 function EndGame () {
     countPoints();
     if (pointsPlayers[1]>pointsPlayers[2]) {
-       document.getElementById("currentPlayer").innerHTML = "Alice gagne ! Le joueur 1 à " + pointsPlayers[1] + " points et le joueur 2 en a " + pointsPlayers[2];
+       document.getElementById("currentPlayer").innerHTML = "Alice gagne ! " + pointsPlayers[1] + " à " + pointsPlayers[2];
     } else if (pointsPlayers[1]<pointsPlayers[2]) {
-        document.getElementById("currentPlayer").innerHTML = "Docteur Plague gagne ! Le joueur 1 à " + pointsPlayers[1] + " points et le joueur 2 en a " + pointsPlayers[2];
+        document.getElementById("currentPlayer").innerHTML = "Plague gagne ! " + pointsPlayers[2] + " à " + pointsPlayers[1];
     } else {
-        document.getElementById("currentPlayer").innerHTML = "Egalité ! Les deux joueurs ont " + pointsPlayers[1] + " points";
+        document.getElementById("currentPlayer").innerHTML = "Egalité ! " + pointsPlayers[1] + " points";
     }
    
     

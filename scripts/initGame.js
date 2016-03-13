@@ -1,14 +1,15 @@
 function checkForm () {
     // VERIF FORMULAIRE
-    
+   
     var formulaire = document.forms["parameters"];
 	var erreur = false;
 	var texteErreur = new Array();
+	
 
     
     var perso = formulaire.elements["perso"];
 	var check = false;
-	for (var i = 0; i < mode.length; i++) {
+	for (var i = 0; i < 2; i++) {
 		if (perso[i].checked == true) {
 			check = true;
 		}
@@ -30,6 +31,7 @@ function checkForm () {
 		}
 	}
 	if (check == false){
+		
 		erreur = true;
 		texteErreur[texteErreur.length] = "Sélectionnez votre mode de jeu";
 	}
@@ -54,6 +56,7 @@ function checkForm () {
 
 		return false;
 	} else {
+
 		return true;
 	}
  

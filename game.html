@@ -8,46 +8,72 @@
 </head>
 <body>
 	
+  <div class="animation-tour">
+     <img id="talice" src="img/Talice.png">
+     <img id="tplague" src="img/Tplague.png"> 
+  </div>
+  
+  <div class="wrapper">
 
- <img id="talice" src="img/Talice.png">
- <img id="tplague" src="img/Tplague.png">
+      <div class="controls">
+          <div class="button BouttonTrois" id="reset"><img src="img/menu.png" alt="icon" width="25px"></div>
+          <div class="button BouttonQuatre" id="save"><img src="img/save.png" alt="icon" width="25px"></div>
+          <div class="button BouttonCinq" id="reload"><img src="img/upload.png" alt="icon" width="25px"></div>
+          <div class="button BouttonDeux" id="restart"><img src="img/replay.png" alt="icon" width="25px"></div>
+      </div>
 
-  <div id="joueurInfo">
-        <div id="currentPlayer"></div>
-       
-        <div id="blackPlayer"> 
-          <img src="img/alice.png">
-          ALICE (1)
-           <div id="blackPrisoner"></div>
 
-        </div>
-       
-        <div id="whitePlayer"> 
-          <img src="img/plague.png">
-          DOCTEUR PLAGUE (2)
-            <div id="whitePrisoner"></div>
-        </div>
+          
+          
+          <div class="errors ko invisible">
+            Impossible de jouer ici !</br>Situation de Ko
+          </div>
+          <div class="errors suicide invisible">
+            Impossible de jouer ici !</br>Situation de suicide
+          </div>
+          <div class="errors pions invisible">
+            Impossible de jouer ici !</br>Il y a déjà un pion
+          </div>
+         
+
+
+              <div id="blackPlayer" class="sections"> 
+                <img src="img/alice.png">
+                <span class="name">ALICE</span>
+                <div class="text">
+                  <span>Prisonniers</span>
+                  <div id="blackPrisoner"></div>
+                </div>
+              </div>
+             
+
+              <div id="container" class="sections">
+                <div class="top">
+                  <div id="currentPlayer"></div>
+                  <div class="BouttonUn" id="passer"><p>> PASSER<p></div>
+                </div>
+                <div id="deco"></div>
+                <div id="goban"></div>
+                <div id="background"></div>
+              </div>
+
+
+              <div id="whitePlayer" class="sections"> 
+               <img src="img/plague.png">
+               <span class="name">PLAGUE</span>
+               <div class="text">
+                  <span>Prisonniers</span>
+                  <div id="whitePrisoner"></div>
+                </div>
+              </div>
+
     
-</div>
-    
 
-    <button class="BouttonUn" id="passer"> Passer </button>
-    <button class="BouttonDeux" id="restart"> Rejouer </button>
-    <button class="BouttonTrois" id="reset"> Menu </button>
+    </div>
+  
 
-    <button class="BouttonQuatre" id="save"> Sauvegarder </button>
-    <button class="BouttonCinq" id="reload"> Charger une sauvegarde </button>
 
-<div id="container">
-    <div id="deco"></div>
-    <div id="goban"></div>
-    <div id="background"></div>
-     
-</div>
 
-<embed src="audio/audio.mp3" width="0" height="0" autostart="true" loop="True" align="left"> 
-</embed>
-	
 
   <script type="text/javascript" src="scripts/jquery.js"></script>
 	<script type="text/javascript" src="scripts/getParameters.js"></script>
